@@ -77,7 +77,7 @@ if(UNIX)
     if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
         target_link_libraries(xgs stdc++fs) #<filesystem>
     endif()
-    if(CMAKE_COMPILER_IS_CLANG)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
             target_link_libraries(xgs c++experimental) 
         elseif(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
