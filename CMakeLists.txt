@@ -75,12 +75,16 @@ target_link_libraries(xgs   PUBLIC emulator #gcc needs this to be first
 
 if(UNIX)
     if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
+        message("GCC: Linking to stdc++fs")
         target_link_libraries(xgs PUBLIC stdc++fs) #<filesystem>
     endif()
     if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        message("Clang: Linking...")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
+            message("c++experimental")
             target_link_libraries(xgs PUBLIC c++experimental) 
         elseif(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
+            message("c++fs")
             target_link_libraries(xgs PUBLIC c++fs) 
         endif()
     endif()
