@@ -38,7 +38,7 @@ else()
     set(OpenGL_GL_PREFERENCE GLVND) #needed for some linux systems
     find_package(OpenGL REQUIRED)
     include_directories(${OPENGL_INCLUDE_DIRS})
-    target_link_libraries(xgs ${OPENGL_LIBRARIES})
+    target_link_libraries(xgs PUBLIC ${OPENGL_LIBRARIES})
 endif()
 
 set(Boost_USE_MULTITHREADED ON)
@@ -60,7 +60,7 @@ add_subdirectory(vgc)
 add_subdirectory(third_party/galogen)
 add_subdirectory(imgui)
 
-target_link_libraries(xgs   emulator #gcc needs this to be first
+target_link_libraries(xgs   PUBLIC emulator #gcc needs this to be first
                             adb
                             debugger 
                             doc 
@@ -75,13 +75,13 @@ target_link_libraries(xgs   emulator #gcc needs this to be first
 
 if(UNIX)
     if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
-        target_link_libraries(xgs stdc++fs) #<filesystem>
+        target_link_libraries(xgs PUBLIC stdc++fs) #<filesystem>
     endif()
     if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
-            target_link_libraries(xgs c++experimental) 
+            target_link_libraries(xgs PUBLIC c++experimental) 
         elseif(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
-            target_link_libraries(xgs c++fs) 
+            target_link_libraries(xgs PUBLIC c++fs) 
         endif()
     endif()
 endif(UNIX)
