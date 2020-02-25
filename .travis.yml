@@ -1,6 +1,9 @@
 language: cpp
 dist: bionic
 os: linux
+compiler:
+  - gcc
+  - clang
 addons:
   apt:
       packages:
