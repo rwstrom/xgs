@@ -4,8 +4,7 @@ os: osx
 addons:
   homebrew:
       packages:
-        - sdl2-dev
-        - libboost-program-options-dev
+        - sdl2
 script:
 - mkdir -p build
 - cd build
