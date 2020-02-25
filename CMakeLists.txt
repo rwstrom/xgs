@@ -91,5 +91,5 @@ if(UNIX)
 endif(UNIX)
 
 if(APPLE)
-    target_compile_options(xgs PUBLIC -mmacosx-version-min=10.15)
+    add_compile_options(-mmacosx-version-min=10.15)
 endif(APPLE)
