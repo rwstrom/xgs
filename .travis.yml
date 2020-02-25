@@ -3,9 +3,9 @@ dist: bionic
 os: linux
 addons:
   apt:
-    packages:
-    - libsdl2-dev
-    - libboost-program-options-dev
+      packages:
+        - libsdl2-dev
+        - libboost-program-options-dev
 script:
 - mkdir -p build
 - cd build
