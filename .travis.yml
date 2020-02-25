@@ -5,6 +5,7 @@ addons:
   homebrew:
       packages:
         - sdl2
+      update: true
 script:
 - mkdir -p build
 - cd build
