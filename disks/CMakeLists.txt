@@ -5,6 +5,7 @@ target_compile_features(disks PUBLIC cxx_std_17)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if(UNIX)
+    target_link_libraries(disks stdc++fs)
     if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
         message("GCC: Linking to stdc++fs")
         target_link_libraries(disks stdc++fs) #<filesystem>
