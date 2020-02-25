@@ -1,10 +1,8 @@
 language: cpp
 dist: bionic
-os: linux
-compiler:
-  - clang
+os: osx
 addons:
-  apt:
+  homebrew:
       packages:
         - libsdl2-dev
         - libboost-program-options-dev
