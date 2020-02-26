@@ -29,7 +29,12 @@ jobs:
           brew install boost
       - name: Build
         run: |
-            mkdir -p build
+            mkdir -p build 
             cd build
             cmake ..
             make
+      - name: Failed
+        if: failure()
+        run: cat compile_commands.json
+         
+        
