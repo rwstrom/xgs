@@ -6,7 +6,7 @@ option(Boost_USE_STATIC_LIBS "Use boost static libs" OFF)
 option(Boost_USE_STATIC_RUNTIME "Use boost static runtime" OFF)
 
 add_executable(xgs emulator/main.cc)
-target_compile_features(xgs PUBLIC cxx_std_17)
+target_compile_features(xgs PUBLIC cxx_std_17 cxx_constexpr)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
