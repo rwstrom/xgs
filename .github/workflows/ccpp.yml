@@ -1,21 +1,35 @@
-name: C/C++ CI
+name: Ubuntu/OSX Build CI
 
 on: [push]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    - name: install-deps
-      run: |
-        sudo apt-get -y install libsdl2-dev
-        sudo apt-get -y install libboost-program-options-dev
-    - name: Build
-      run: |
-          mkdir -p build
-          cd build
-          cmake ..
-          make
+    Ubuntu-Build:
+      runs-on: ubuntu-latest
+      
+      steps:
+      - uses: actions/checkout@v2
+      - name: install-deps
+        run: |
+          sudo apt-get -y install libsdl2-dev
+          sudo apt-get -y install libboost-program-options-dev
+      - name: Build
+        run: |
+            mkdir -p build
+            cd build
+            cmake ..
+            make
+    MacOs-Build:
+      runs-on: macos-latest
+       steps:
+      - uses: actions/checkout@v2
+      - name: install-deps
+        run: |
+          brew install libsdl2
+          brew install libboost-program-options
+      - name: Build
+        run: |
+            mkdir -p build
+            cd build
+            cmake ..
+            make
