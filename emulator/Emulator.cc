@@ -12,11 +12,12 @@
  * a copy of the emulator.
  */
 
-#ifndef _WIN32
+#ifdef __linux__
     //windows doesn't have these
     #include <sys/time.h>
     #include <sys/timerfd.h>
 #else
+    //windows and osx don't have timerfd.h
     //use chrono instead
     #include <chrono>
     #include <thread>
@@ -103,7 +104,7 @@ bool Emulator::setup(const int argc, const char** argv)
         return false;
     }
 
-#ifndef _WIN32
+#ifdef __linux__
     struct timespec ts;
 
     clock_getres(CLOCK_MONOTONIC, &ts);
@@ -216,7 +217,7 @@ void Emulator::run()
     timer_interval = 1000000000 / framerate;
     cerr << boost::format("Timer period is %d Hz (%d ns)\n") % framerate % timer_interval;
 
-#ifndef _WIN32
+#ifdef __linux__
     uint64_t exp;
     timer.it_interval.tv_sec  = 0;
     timer.it_interval.tv_nsec = timer_interval;

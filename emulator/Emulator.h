@@ -115,7 +115,7 @@ class Emulator {
         float target_speed;
 
         // The timer we use for scheduling
-#ifndef _WIN32
+#ifdef __linux__
         struct itimerspec timer;
 #endif
         unsigned int timer_interval;
