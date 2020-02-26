@@ -26,7 +26,6 @@ jobs:
       - name: install-deps
         run: |
           brew install sdl2
-          brew install boost-program-options
       - name: Build
         run: |
             mkdir -p build
