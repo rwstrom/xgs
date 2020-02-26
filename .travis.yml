@@ -1,7 +1,14 @@
 language: cpp
-osx_image: xcode11.3
-os: osx
+#can't build on osx until they make version 10.5 available
+#osx_image: xcode11.3
+#os: osx
+os: linux
+distro: disco
 addons:
+  apt:
+    packages:
+    - libboost-program-options-dev
+    - libsdl2-dev
   homebrew:
       packages:
         - sdl2
