@@ -21,7 +21,8 @@ jobs:
             make
     MacOs-Build:
       runs-on: macos-latest
-       steps:
+
+      steps:
       - uses: actions/checkout@v2
       - name: install-deps
         run: |
