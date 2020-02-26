@@ -9,7 +9,7 @@ add_executable(xgs emulator/main.cc)
 target_compile_features(xgs PUBLIC cxx_std_17)
 
 include_directories(${PROJECT_SOURCE_DIR})
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(xgs_VERSION_MAJOR 0)
 set(xgs_VERSION_MINOR 60)
 add_definitions(-DVERSION_MAJOR=${xgs_VERSION_MAJOR} -DVERSION_MINOR=${xgs_VERSION_MINOR})
