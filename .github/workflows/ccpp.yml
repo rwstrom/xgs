@@ -35,6 +35,6 @@ jobs:
             make
       - name: Failed
         if: failure()
-        run: cat compile_commands.json
+        run: cat build/compile_commands.json
          
         
