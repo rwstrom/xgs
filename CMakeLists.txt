@@ -89,7 +89,3 @@ if(UNIX)
         endif()
     endif()
 endif(UNIX)
-
-if(APPLE)
-    add_compile_options(-mmacosx-version-min=10.15)
-endif(APPLE)
