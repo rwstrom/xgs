@@ -3,7 +3,7 @@ language: cpp
 #osx_image: xcode11.3
 #os: osx
 os: linux
-distro: disco
+distro: bionic
 addons:
   apt:
     packages:
