@@ -1,9 +1,9 @@
 language: cpp
 #can't build on osx until they make version 10.5 available
-#osx_image: xcode11.3
-#os: osx
-os: linux
-distro: bionic
+osx_image: xcode11.3
+os: osx
+#os: linux
+#distro: bionic
 addons:
   apt:
     packages:
