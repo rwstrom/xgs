@@ -1,6 +1,9 @@
 language: cpp
 dist: bionic
 os: linux
+branches:
+  except:
+  - master
 before_install:
 - sudo apt-get -y install libsdl2-dev
 - sudo apt-get -y install libboost-program-options-dev
