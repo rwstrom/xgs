@@ -1,0 +1,21 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: install-deps
+      run: |
+        sudo apt-get -y install libsdl2-dev
+        sudo apt-get -y install libboost-program-options-dev
+    - name: Build
+      run: |
+          mkdir -p build
+          cd build
+          cmake ..
+          make
