@@ -66,7 +66,7 @@ using std::cerr;
 using std::endl;
 using std::string;
 
-#ifndef _WIN32
+#ifdef __linux__
 // avoid having to constantly reallocate this
 static struct timeval tv;
 #endif
@@ -83,7 +83,7 @@ Emulator::Emulator()
 
 Emulator::~Emulator()
 {
-#ifndef _WIN32
+#ifdef __linux__
     close(timer_fd);
 #endif
     delete cpu;
@@ -236,7 +236,7 @@ void Emulator::run()
 
     while (running) {
 
-#ifndef _WIN32
+#ifdef __linux__
         ssize_t len = read(timer_fd, &exp, sizeof(exp));
 
         if (len != sizeof(exp)) {
@@ -248,7 +248,7 @@ void Emulator::run()
 
         tick();
         pollForEvents();
-#ifdef _WIN32
+#ifndef __linux__
     std::this_thread::sleep_until(next_tick);
 #endif
     }
