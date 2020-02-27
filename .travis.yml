@@ -1,12 +1,21 @@
 language: cpp
 dist: bionic
-os: linux
+osx_image: xcode11.3
+os: 
+  - linux
+  - osx
 branches:
   except:
   - master
-before_install:
-- sudo apt-get -y install libsdl2-dev
-- sudo apt-get -y install libboost-program-options-dev
+addons:
+  apt:
+    packages:
+    - libboost-program-options-dev
+    - libsdl2-dev
+  homebrew:
+      packages:
+        - sdl2
+      update: true
 script:
 - mkdir -p build
 - cd build
