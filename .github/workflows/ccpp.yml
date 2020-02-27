@@ -1,8 +1,9 @@
 name: Ubuntu/OSX Build CI
 
-on: [push]
-  paths-ignore:
-  - '**/*md/**'
+on: 
+  push:
+    paths-ignore:
+    - '**/*md/**'
 
 jobs:
   Ubuntu-Build:
