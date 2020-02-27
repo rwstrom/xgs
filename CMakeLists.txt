@@ -10,10 +10,11 @@ project(xgs VERSION 0.60)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(Boost_USE_MULTITHREADED ON)
-
+set(CMAKE_CXX_STANDARD 17)
+set( CMAKE_CXX_EXTENSIONS OFF ) # don't rely on compiler specific extensions.
 
 add_executable(xgs emulator/main.cc)
-target_compile_features(xgs PUBLIC cxx_std_17)
+#target_compile_features(xgs PUBLIC cxx_std_20)
 
 add_definitions(-DVERSION_MAJOR=${xgs_VERSION_MAJOR} 
                 -DVERSION_MINOR=${xgs_VERSION_MINOR}
