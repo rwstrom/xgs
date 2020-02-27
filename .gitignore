@@ -7,3 +7,5 @@ CTestTestfile.cmake
 build
 .vs
 .vscode
+xgs.conf
+rom_images
