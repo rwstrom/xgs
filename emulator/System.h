@@ -1,7 +1,6 @@
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
-#include <iostream>
 #include <map>
 #include <boost/format.hpp>
 
@@ -65,11 +64,11 @@ class System {
 
         std::map<std::string, Device *> devices;
 
-        Device *io_read[kPageSize];
-        Device *io_write[kPageSize];
+        Device *io_read[kPageSize] = {nullptr};
+        Device *io_write[kPageSize] = {nullptr};
 
-        Device *cop_handler[256];
-        Device *wdm_handler[256];
+        Device *cop_handler[256] = {nullptr};
+        Device *wdm_handler[256] = {nullptr};
 
         bool irq_states[16];
 

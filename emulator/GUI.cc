@@ -15,6 +15,8 @@
 
 #include "disks/IWM.h"
 
+using std::string;
+using boost::format;
 namespace GUI {
 
 // Data

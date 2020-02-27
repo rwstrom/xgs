@@ -12,7 +12,6 @@
  * the VGC.
  */
 
-#include <cstdlib>
 #include <stdexcept>
 
 #include "emulator/common.h"
@@ -25,6 +24,7 @@
 #include "standard_colors.h"
 
 using std::cerr;
+using boost::format;
 
 void VGC::reset()
 {

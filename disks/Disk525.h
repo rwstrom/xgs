@@ -1,8 +1,6 @@
 #ifndef DISK525_H_
 #define DISK525_H_
 
-#include <cstdlib>
-
 #include "disks/DiskTrack.h"
 
 class VirtualDisk;

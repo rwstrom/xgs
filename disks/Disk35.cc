@@ -11,12 +11,9 @@
  * A class for emulating 3.5" floppies
  */
 
-#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
 #include <boost/format.hpp>
-
-#include <SDL.h>
 
 #include "emulator/common.h"
 

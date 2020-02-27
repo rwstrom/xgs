@@ -11,7 +11,6 @@
  * Video mode driver for double high-resolution graphics mode
  */
 
-#include <cstdlib>
 
 #include "emulator/common.h"
 #include "DblHires.h"

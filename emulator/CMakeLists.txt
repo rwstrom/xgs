@@ -6,4 +6,4 @@ target_include_directories(emulator PRIVATE ../third_party/glm
                                             ../third_party/galogen/generated_files)
 
 target_link_libraries(emulator Boost::program_options)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+

@@ -12,7 +12,6 @@
  * ProDOS block devices of up to 32 MB each.
  */
 
-#include <cstdlib>
 #include <stdexcept>
 
 #include "emulator/common.h"

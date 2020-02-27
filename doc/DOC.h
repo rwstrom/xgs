@@ -1,7 +1,6 @@
 #ifndef DOC_H_
 #define DOC_H_
 
-#include <cstdlib>
 #include <string>
 #include <vector>
 

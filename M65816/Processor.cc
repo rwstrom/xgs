@@ -7,7 +7,6 @@
  * Commercial use is prohibited without my written permission
  */
 
-#include <iostream>
 #include <boost/format.hpp>
 
 #include "Processor.h"

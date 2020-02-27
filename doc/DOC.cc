@@ -12,7 +12,6 @@
  * Ensoniq DOC and the legacy 1-bit speaker audio.
  */
 
-#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
 #include <boost/format.hpp>

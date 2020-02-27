@@ -11,11 +11,6 @@
  * This class implements the ADB subsystem, including the ADB GLU and the SKI
  */
 
-#include <cstdlib>
-#include <stdexcept>
-
-#include <SDL.h>
-
 #include "emulator/common.h"
 #include "emulator/System.h"
 #include "M65816/Processor.h"

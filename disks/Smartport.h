@@ -1,7 +1,5 @@
 #ifndef SMARTPORT_H_
 
-#include <cstdlib>
-#include <iostream>
 #include <vector>
 
 #include "emulator/Device.h"

@@ -10,11 +10,6 @@
 #ifndef DEBUGGER_H
 #define DEBUGGER_H
 
-#include <iterator>
-#include <memory>
-#include <string>
-#include <vector>
-
 #include "M65816/types.h"
 
 class System;
