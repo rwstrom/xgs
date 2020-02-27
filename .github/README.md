@@ -2,14 +2,12 @@
 XGS-rws ![Ubuntu/OSX Build CI](https://github.com/rwstrom/xgs/workflows/Ubuntu/OSX%20Build%20CI/badge.svg)
 ===
 
-XGS-rws is a fork of Linux-based Apple IIGS emulator.
+This is a fork of [XGS ](https://github.com/jmthompson/xgs). A Linux-based Apple IIGS emulator.
+
 
 # About This Version
 
-This version has changes that allow it to be compiled for windows, linux, macos.
-
-
-More information about XGS at the original authors blog (https://www.thompson.us.org/joshua/xgs/).
+Changes have been made so it compiles on windows, linux, and macOSX 10.15.
 
 # Compiling
 
@@ -63,6 +61,7 @@ You can also display the help text if you need help with the command-line option
 ```
 
 # Status
+It runs on windows 10 but I have yet to try it on other platforms.
 
 Currently the emulator successfully boots to an AppleSoft prompt.
 
