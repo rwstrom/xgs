@@ -1,12 +1,12 @@
-![Ubuntu/OSX Build CI](https://github.com/rwstrom/xgs/workflows/Ubuntu/OSX%20Build%20CI/badge.svg)
-XGS-rws
+
+XGS-rws ![Ubuntu/OSX Build CI](https://github.com/rwstrom/xgs/workflows/Ubuntu/OSX%20Build%20CI/badge.svg)
 ===
 
 XGS-rws is a fork of Linux-based Apple IIGS emulator.
 
 # About This Version
 
-This version has changes that allow it to be compiled under windows with msvc.
+This version has changes that allow it to be compiled for windows, linux, macos.
 
 
 More information about XGS at the original authors blog (https://www.thompson.us.org/joshua/xgs/).
