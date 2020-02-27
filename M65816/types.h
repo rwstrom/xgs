@@ -16,7 +16,6 @@
 #ifndef M65816_TYPES_H_
 #define M65816_TYPES_H_
 
-#include <cstdint>
 
 namespace M65816 {
 

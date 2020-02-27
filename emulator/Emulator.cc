@@ -57,7 +57,7 @@ namespace po = boost::program_options;
 using std::cerr;
 using std::endl;
 using std::string;
-
+using boost::format;
 
 static long now()
 {

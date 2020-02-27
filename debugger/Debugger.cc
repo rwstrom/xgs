@@ -12,8 +12,8 @@
 #include <sstream>
 #include <memory>
 #include <string>
-#include <cstdio>
 #include <vector>
+
 #include <boost/format.hpp>
 
 #include "M65816/Processor.h"

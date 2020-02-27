@@ -1,8 +1,6 @@
 #ifndef IWM_H_
 #define IWM_H_
 
-#include <cstdlib>
-
 #include "emulator/Device.h"
 
 #include "disks/Disk35.h"

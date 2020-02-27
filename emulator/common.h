@@ -10,17 +10,16 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
-#include <cstdlib>
 #include <iostream>
 #include <random>
 #include <string>
 #include <boost/format.hpp>
 
-using boost::format;
+
 using std::uint8_t;
 using std::uint16_t;
 using std::uint32_t;
-using std::string;
+//using std::string;
 
 /**
  * This file contains typesdefs and functions shared by all the separate XGS

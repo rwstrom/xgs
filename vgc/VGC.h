@@ -1,7 +1,6 @@
 #ifndef VGC_H_
 #define VGC_H_
 
-#include <cstdlib>
 
 #include "emulator/common.h"
 #include "emulator/Device.h"

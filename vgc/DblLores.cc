@@ -11,7 +11,7 @@
  * Video mode driver for double low-resolution graphics mode
  */
 
-#include <cstdlib>
+
 
 #include "emulator/common.h"
 #include "DblLores.h"

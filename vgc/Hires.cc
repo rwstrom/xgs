@@ -11,7 +11,6 @@
  * Video mode driver for high-resolution graphics mode
  */
 
-#include <cstdlib>
 
 #include "emulator/common.h"
 #include "Hires.h"

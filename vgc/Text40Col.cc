@@ -11,7 +11,6 @@
  * Video mode driver for 40-column text mode
  */
 
-#include <cstdlib>
 
 #include "emulator/common.h"
 #include "Text40Col.h"

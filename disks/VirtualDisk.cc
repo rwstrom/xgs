@@ -14,7 +14,7 @@
 
 #include "disks/VirtualDisk.h"
 
-#include <climits>
+//#include <climits>
 #include <stdexcept>
 
 #include "emulator/common.h"

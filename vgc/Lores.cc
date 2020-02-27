@@ -11,7 +11,6 @@
  * Video mode driver for low-resolution graphics mode
  */
 
-#include <cstdlib>
 
 #include "emulator/common.h"
 #include "Lores.h"

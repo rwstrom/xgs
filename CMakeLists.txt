@@ -1,21 +1,23 @@
 cmake_minimum_required(VERSION 3.6)
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
-project(xgs)
 
 option(Boost_USE_STATIC_LIBS "Use boost static libs" OFF) 
 option(Boost_USE_STATIC_RUNTIME "Use boost static runtime" OFF)
 
+#this needs to come before project command
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
+
+project(xgs VERSION 0.60)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(Boost_USE_MULTITHREADED ON)
+
+
 add_executable(xgs emulator/main.cc)
 target_compile_features(xgs PUBLIC cxx_std_17)
 
-include_directories(${PROJECT_SOURCE_DIR})
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(xgs_VERSION_MAJOR 0)
-set(xgs_VERSION_MINOR 60)
-add_definitions(-DVERSION_MAJOR=${xgs_VERSION_MAJOR} -DVERSION_MINOR=${xgs_VERSION_MINOR})
-
-# enable the debugger
-add_definitions(-DENABLE_DEBUGGER)
+add_definitions(-DVERSION_MAJOR=${xgs_VERSION_MAJOR} 
+                -DVERSION_MINOR=${xgs_VERSION_MINOR}
+                -DENABLE_DEBUGGER )
 
 # Test endianness of the target system
 INCLUDE (${CMAKE_ROOT}/Modules/TestBigEndian.cmake)
@@ -37,16 +39,14 @@ if(BCMHOST)
 else()
     set(OpenGL_GL_PREFERENCE GLVND) #needed for some linux systems
     find_package(OpenGL REQUIRED)
-    include_directories(${OPENGL_INCLUDE_DIRS})
-    target_link_libraries(xgs ${OPENGL_LIBRARIES})
 endif()
-
-set(Boost_USE_MULTITHREADED ON)
 
 find_package(Boost 1.60.0 REQUIRED COMPONENTS program_options)
 find_package(SDL2 REQUIRED)
 
-include_directories(${SDL2_INCLUDE_DIRS} ${Boost_INCLUDE_DIR})
+include_directories(${PROJECT_SOURCE_DIR} 
+                    ${SDL2_INCLUDE_DIRS} 
+                    ${Boost_INCLUDE_DIR})
 
 add_subdirectory(adb)
 add_subdirectory(debugger)
@@ -73,6 +73,21 @@ target_link_libraries(xgs   emulator #gcc needs this to be first
                             ${Boost_LIBRARIES} 
                             ${SDL2_LIBRARIES})
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
-    target_link_libraries(xgs stdc++fs) #<filesystem>
-endif()
+#additional linking needed for std::filesystem with clang and gcc
+if(UNIX)
+    if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
+        message("GCC: Linking to stdc++fs")
+        target_link_libraries(xgs PUBLIC stdc++fs) 
+    endif()
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        message("Clang: Linking...")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
+            message("c++experimental")
+            target_link_libraries(xgs PUBLIC c++experimental) 
+        elseif(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
+            message("c++fs")
+            target_link_libraries(xgs PUBLIC c++fs) 
+        endif()
+    endif()
+endif(UNIX)
+
