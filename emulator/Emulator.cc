@@ -369,14 +369,14 @@ unsigned int Emulator::loadFile(const std::string& filename, const unsigned int 
 
 bool Emulator::loadConfig(const int argc, const char **argv)
 {
-    const char *p;
+    const char *p = nullptr;
     unsigned int ram_size;
     string rom_file;
     string font40_file;
     string font80_file;
 
-#ifndef _WIN32
-    if (p = std::getenv("XGS_DATA_DIR")) {
+#ifndef _WIN32 //assume unix style layout for non-window systems 
+    if ((p = std::getenv("XGS_DATA_HOME") )) {
         data_dir = path(p);
     }
     else if (p = std::getenv("HOME")) {
@@ -385,8 +385,9 @@ bool Emulator::loadConfig(const int argc, const char **argv)
     else {
         return false;
     }
-#else
-    //TODO: consider using window env variables
+#else //windows
+    //windows is a mess when it comes to finding file locations.
+    //
     data_dir = fs::current_path();
 #endif
 
