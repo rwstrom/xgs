@@ -67,3 +67,5 @@ Currently the emulator successfully boots to an AppleSoft prompt.
 
 This code will be very much in flux for the next few months as I continue to
 debug, improve, and streamline the code base.
+
+![Ubuntu/OSX Build CI](https://github.com/rwstrom/xgs/workflows/Ubuntu/OSX%20Build%20CI/badge.svg)
