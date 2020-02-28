@@ -31,6 +31,7 @@ make
 The binary will be compiled to build/xgs.
 
 # Usage
+**On mac/linux:**
 
 Before starting XGS for the first time you'll need to create the XGS home directory
 and copy some files into it.
@@ -59,7 +60,11 @@ You can also display the help text if you need help with the command-line option
 ```
 ./build/xgs --help
 ```
+**On Windows:**
 
+```
+Copy all the dll files from your SDL2/lib/x64 folder and all the fonts from the xgs/font folder and your xgs.rom file into the same folder as the xgs.exe and double click on the exe.
+```
 # Status
 It runs on windows 10 but I have yet to try it on other platforms.
 
