@@ -593,7 +593,7 @@ void ADB::triggerPaddles()
 void ADB::handleKeyDown(SDL_KeyboardEvent *event)
 {
     SDL_Keycode sym = event->keysym.sym;
-    char key = 0x00;
+    unsigned char key = 0x00;
 
     switch(sym) {
         case SDLK_CAPSLOCK:

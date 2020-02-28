@@ -180,8 +180,8 @@ void Video::onResize(const unsigned int width, const unsigned int height)
     win_width  = width;
     win_height = height;
 
-    float hscale = win_width / video_width;
-    float vscale = win_height / video_height;
+    float hscale = static_cast<float>(win_width / video_width);
+    float vscale = static_cast<float>(win_height / video_height);
 
     if (hscale < vscale) {
         frame_height = video_height * hscale;

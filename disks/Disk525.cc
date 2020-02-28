@@ -73,7 +73,7 @@ uint8_t Disk525::read(const cycles_t cycle_count)
     if (num_bits > (size + 2)) {
         num_bits -= (size + 2);
 
-        unsigned int skipped = num_bits >> 3;
+        auto skipped = num_bits >> 3;
 
         nib_pos = (nib_pos + skipped) % track.track_len;
 
@@ -109,7 +109,7 @@ void Disk525::write(const cycles_t cycle_count, const uint8_t val)
 
     track.dirty = true;
 
-    unsigned int num_bits = (cycle_count - last_access) >> 2;
+    unsigned int num_bits = static_cast<unsigned int>( (cycle_count - last_access) >> 2 );
 
     track.write(val? val : cycle_count & 0xFF, num_bits, nib_pos);
 
@@ -163,7 +163,7 @@ void Disk525::loadTrack(DiskTrack& track)
     if (track.nibble_data != nullptr) return;
 
     try {
-        int i;
+        unsigned int i;
 
         track.allocate(kNibblesPerTrack);
 

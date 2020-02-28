@@ -111,7 +111,6 @@ void VirtualDisk::open()
 void VirtualDisk::openTwoImgFile()
 {
     TwoImgHeader header;
-    uintmax_t    bytes;
 
     file.read((char *) &header, sizeof(header));
 

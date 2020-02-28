@@ -403,7 +403,7 @@ void drawMenu(Emulator& emulator)
     ImGui::SetNextWindowPos(ImVec2(video->frame_left + 10, video->frame_top + 10));
     ImGui::SetNextWindowSize(ImVec2(350, 55));
     ImGui::Begin("CPU Speed", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-    ImGui::SliderFloat("Max Speed", &max_speed, 2.8, 32.0);
+    ImGui::SliderFloat("Max Speed", &max_speed, 2.8f, 32.0f);
     ImGui::End();
 
     emulator.setMaxSpeed(max_speed);

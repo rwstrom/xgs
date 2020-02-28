@@ -98,7 +98,7 @@ uint8_t IWM::read(const unsigned int& offset)
             else {
                 if (iwm_35sel) {
                     if (iwm_motor_on) {
-                        unsigned int state = (iwm_phase[2] << 3) | (iwm_phase[1] << 2) | (iwm_phase[0] << 1) | iwm_35ctl;
+                        unsigned int state = (iwm_phase[2] << 3) | (iwm_phase[1] << 2) | (iwm_phase[0] << 1) | (iwm_35ctl <<0);
 
                         status = disks_35[iwm_drive_select].status(state);
                     }

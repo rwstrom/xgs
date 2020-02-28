@@ -296,7 +296,7 @@ uint8_t Mega2::read(const unsigned int& offset)
         case 0x2D:
             for (int i = 7 ; i >= 0 ; --i) {
                 val <<= 1;
-                val |= sw_slot_reg[i];
+                val |= static_cast<int>(sw_slot_reg[i]);
             }
 
             break;

@@ -91,15 +91,15 @@ bool Emulator::setup(const int argc, const char** argv)
 
     last_time = now();
 
-    maximum_speed = 2.8;
+    maximum_speed = 2.8f;
     framerate = pal? 50 : 60;
 
-    for (int i = 0 ; i < framerate; ++i) {
-        times[i] = 0.0;
+    for (unsigned int i = 0 ; i < framerate; ++i) {
+        times[i] = 0;
         cycles[i] = 0;
     }
 
-    total_time   = 0.0;
+    total_time   = 0;
     total_cycles = 0;
     last_cycles  = 0;
 
@@ -209,9 +209,9 @@ void Emulator::run()
 
 void Emulator::tick()
 {
-    target_speed = mega2->sw_fastmode? maximum_speed : 1.0;
+    target_speed = mega2->sw_fastmode? maximum_speed : 1.0f;
 
-    unsigned int cycles_per = (1000000/(VGC::kLinesPerFrame * framerate)) * target_speed;
+    unsigned int cycles_per = static_cast<unsigned int>( (1000000/(VGC::kLinesPerFrame * framerate)) * target_speed );
 
     for (unsigned int line = 0; line < VGC::kLinesPerFrame ; ++line) {
         unsigned int num_cycles = cpu->runUntil(cycles_per);
@@ -268,7 +268,7 @@ void Emulator::tick()
     cycles[current_frame] = diff_cycles;
     total_cycles += diff_cycles;
 
-    actual_speed = ((float) total_cycles / (float) total_time) / 1000.0;
+    actual_speed = ((float) total_cycles / (float) total_time) / 1000.0f;
 }
 
 void Emulator::pollForEvents()

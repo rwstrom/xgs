@@ -134,14 +134,14 @@ void Debugger::handleVectorRead(const uint8_t bank, const uint16_t address, cons
 std::string Debugger::renderArgument()
 {
     std::stringstream buffer;
-    int i;
+    //int i;
 
     switch (opcodes[cpu_instr.bytes[0]].mode) {
         case kAddrMode_immediate:
 
             buffer << "#$";
 
-            for (i = cpu_instr.bytes.size() - 1 ; i > 0 ; i--) {
+            for (auto i = cpu_instr.bytes.size() - 1 ; i > 0 ; i--) {
                 buffer << format("%02X") % cpu_instr.bytes[i];
             }
 

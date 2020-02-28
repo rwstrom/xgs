@@ -147,6 +147,7 @@ void Smartport::prodosEntry()
                 }
             }
             catch (std::runtime_error& e) {
+                std::cerr << e.what() << std::endl;
                 cpu->A.B.L = 0x27;  // I/O ERROR
             }
 
@@ -164,6 +165,7 @@ void Smartport::prodosEntry()
                     unit->write(disk_buffer, block, 1);
                 }
                 catch (std::runtime_error& e) {
+                    std::cerr << e.what() << std::endl;
                     cpu->A.B.L = 0x27;  // I/O ERROR
                 }
             }
@@ -406,6 +408,7 @@ void Smartport::readBlockCmd(const uint8_t pbank, const uint16_t paddr)
         unit->read(disk_buffer, block, 1);
     }
     catch (std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
         cpu->A.B.L = 0x27;
 
         return;
@@ -464,6 +467,7 @@ void Smartport::writeBlockCmd(const uint8_t pbank, const uint16_t paddr)
         unit->write(disk_buffer, block, 1);
     }
     catch (std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
         cpu->A.B.L = 0x27;
 
         return;
@@ -653,6 +657,7 @@ void Smartport::readBlockCmdExt(const uint8_t pbank, const uint16_t paddr)
         unit->read(disk_buffer, block, 1);
     }
     catch (std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
         cpu->A.B.L = 0x27;
 
         return;
@@ -715,6 +720,7 @@ void Smartport::writeBlockCmdExt(const uint8_t pbank, const uint16_t paddr)
         unit->write(disk_buffer, block, 1);
     }
     catch (std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
         cpu->A.B.L = 0x27;
 
         return;

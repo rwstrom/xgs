@@ -22,10 +22,10 @@ class DiskTrack {
         bool dirty = false;
 
         int overflow_size = 0;
-        int track_len = 0;
-
-        unsigned int track_num;
-        unsigned int nibble_count;
+        
+        unsigned int track_len = 0;
+        unsigned int track_num = 0;
+        unsigned int nibble_count = 0;
 
         std::uint8_t *nibble_size = nullptr;
         std::uint8_t *nibble_data = nullptr;

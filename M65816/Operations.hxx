@@ -180,7 +180,7 @@ inline void op_ROL()
 
     SR.C = operand.m & n_bit;
 
-    operand.m = (operand.m << 1) | c;
+    operand.m = (operand.m << 1) | (c << 0);
 
     checkIfNegative(operand.m);
     checkIfZero(operand.m);
@@ -302,7 +302,7 @@ inline void op_STA()
 {
     system->cpuWrite(operand_bank, operand_addr, A, DATA);
 
-    if (sizeof(MemSizeType) == 2) {
+    if constexpr(sizeof(MemSizeType) == 2) {
         system->cpuWrite(operand_bank, operand_addr + 1, A >> 8, DATA);
     }
 }
@@ -311,7 +311,7 @@ inline void op_STX()
 {
     system->cpuWrite(operand_bank, operand_addr, X, DATA);
 
-    if (sizeof(IndexSizeType) == 2) {
+    if constexpr(sizeof(IndexSizeType) == 2) {
         system->cpuWrite(operand_bank, operand_addr + 1, X >> 8, DATA);
     }
 }
@@ -320,7 +320,7 @@ inline void op_STY()
 {
     system->cpuWrite(operand_bank, operand_addr, Y, DATA);
 
-    if (sizeof(IndexSizeType) == 2) {
+    if constexpr(sizeof(IndexSizeType) == 2) {
         system->cpuWrite(operand_bank, operand_addr + 1, Y >> 8, DATA);
     }
 }
@@ -329,7 +329,7 @@ inline void op_STZ()
 {
     system->cpuWrite(operand_bank, operand_addr, 0, DATA);
 
-    if (sizeof(MemSizeType) == 2) {
+    if constexpr(sizeof(MemSizeType) == 2) {
         system->cpuWrite(operand_bank, operand_addr + 1, 0, DATA);
     }
 }

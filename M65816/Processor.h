@@ -95,7 +95,7 @@ class StatusRegister {
         }
 
         operator uint8_t() const {
-            return (N << 7)|(V << 6)|(M << 5)|(X << 4)|(D << 3)|(I << 2)|(Z << 1)|C;
+            return (N << 7)|(V << 6)|(M << 5)|(X << 4)|(D << 3)|(I << 2)|(Z << 1)| (C << 0);
         };
 };
 

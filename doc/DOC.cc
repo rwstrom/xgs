@@ -87,7 +87,7 @@ uint8_t DOC::read(const unsigned int& offset)
 
     switch (offset) {
         case 0x30:
-            click_sample = click_sample? 0 : 1.0;
+            click_sample = click_sample? 0 : 1.0f;
 
             break;
         case 0x3C:
@@ -141,13 +141,13 @@ void DOC::write(const unsigned int& offset, const uint8_t& val)
 {
     switch (offset) {
         case 0x30:
-            click_sample = click_sample? 0 : 1.0;
+            click_sample = click_sample? 0 : 1.0f;
 
             break;
         case 0x3C:
             glu_ctrl_reg = val;
 
-            system_volume = ((float) (val & 0x07)) / 7.0;
+            system_volume = ((float) (val & 0x07)) / 7.0f;
 
             break;
         case 0x3D:
@@ -235,7 +235,6 @@ void DOC::setOutputDevice(const char *device)
     //sound_device = device;
 
     SDL_AudioSpec wanted, actual;
-    int i;
 
     SDL_zero(wanted);
 
@@ -283,12 +282,12 @@ void DOC::setOutputDevice(const char *device)
  */
 void DOC::enableOscillators(void)
 {
-    int    i,mode,last_mode;
+    int mode,last_mode;
 
     num_osc = ((doc_registers[0xE1] >> 1) & 0x1F) + 1;
 
     last_mode = -1;
-    for (i = 0 ; i < num_osc ; i++) {
+    for (unsigned int i = 0 ; i < num_osc ; i++) {
         mode = (doc_registers[0xA0 + i] >> 1) & 0x03;
         if (i & 0x01) {        /* odd */
             if (!osc_enable[i]) {
@@ -341,7 +340,7 @@ void DOC::bufferCallback(Uint8 *stream, int len)
 void DOC::scanOscillators(AudioSample *samples_out)
 {
     int addr;
-    int osc_num;
+    unsigned int osc_num;
     float sample;
 
     for (osc_num = 0 ; osc_num < num_osc; osc_num++) {
@@ -401,7 +400,7 @@ void DOC::scanOscillators(AudioSample *samples_out)
         }
 
         /* Normalize sample to [ -1, 1 ] and scale to oscillator volume */
-        sample = ((sample - 128) / 127.0) * osc_vol[osc_num];
+        sample = ((sample - 128) / 127.0f) * osc_vol[osc_num];
 
         if (osc_chan[osc_num] & 0x01) {
             samples_out->right += sample;
@@ -419,7 +418,7 @@ void DOC::updateOscillator(const unsigned int osc_num)
     osc_chan[osc_num] = (ctrl >> 4) & 0x0F;
     osc_freq[osc_num] = (doc_registers[0x20 + osc_num] << 8) |
                  doc_registers[0x00 + osc_num];
-    osc_vol[osc_num] =  (float) doc_registers[0x40 + osc_num] / 255.0;
+    osc_vol[osc_num] =  (float) doc_registers[0x40 + osc_num] / 255.0f;
     osc_wp[osc_num] =  doc_registers[0x80 + osc_num];
     osc_int[osc_num] = ctrl & 0x08;
     osc_mode[osc_num] = (ctrl >> 1) & 0x03;

@@ -50,7 +50,7 @@ T random(T a , T b)
     static std::mt19937 mt(rd());
     typedef typename std::conditional<std::is_integral<T>::value,
 							std::uniform_int_distribution<T>,
-							std::uniform_real_distribution<T>>::type Dist;
+							std::uniform_real_distribution<T> >::type Dist;
     Dist dist(a,b);
     return dist(mt);
 }
