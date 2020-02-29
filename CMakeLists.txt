@@ -1,25 +1,26 @@
 cmake_minimum_required(VERSION 3.6)
 
-option(Boost_USE_STATIC_LIBS "Use boost static libs" OFF) 
-option(Boost_USE_STATIC_RUNTIME "Use boost static runtime" OFF)
 
-#this needs to come before project command
+
+#This needs to come before project command
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
 project(xgs VERSION 0.60)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(Boost_USE_MULTITHREADED ON)
+
+#Set C++ standard globally
 set(CMAKE_CXX_STANDARD 17)
-set( CMAKE_CXX_EXTENSIONS OFF ) # don't rely on compiler specific extensions.
+#Don't rely on compiler specific extensions.
+set( CMAKE_CXX_EXTENSIONS OFF )
 
 add_executable(xgs emulator/main.cc)
-#target_compile_features(xgs PUBLIC cxx_std_20)
 
 add_definitions(-DVERSION_MAJOR=${xgs_VERSION_MAJOR} 
                 -DVERSION_MINOR=${xgs_VERSION_MINOR}
                 -DENABLE_DEBUGGER )
 
+                
 # Test endianness of the target system
 INCLUDE (${CMAKE_ROOT}/Modules/TestBigEndian.cmake)
 
@@ -41,6 +42,11 @@ else()
     set(OpenGL_GL_PREFERENCE GLVND) #needed for some linux systems
     find_package(OpenGL REQUIRED)
 endif()
+
+# Boost setup
+option(Boost_USE_STATIC_LIBS "Use boost static libs" OFF) 
+option(Boost_USE_STATIC_RUNTIME "Use boost static runtime" OFF)
+set(Boost_USE_MULTITHREADED ON)
 
 find_package(Boost 1.60.0 REQUIRED COMPONENTS program_options)
 find_package(SDL2 REQUIRED)
@@ -81,12 +87,11 @@ if(UNIX)
         target_link_libraries(xgs stdc++fs) 
     endif()
     if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        message("Clang: Linking...")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
-            message("c++experimental")
+            message("Clang: linking to c++experimental")
             target_link_libraries(xgs c++experimental) 
         elseif(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
-            message("c++fs")
+            message("Clang: linking to c++fs")
             target_link_libraries(xgs c++fs) 
         endif()
     endif()
