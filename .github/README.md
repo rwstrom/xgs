@@ -74,6 +74,8 @@ then double click on the exe.
 | --- |     ---    |  ---   |   ---     |
 | Builds 64-bit | Yes     | Yes    | Yes |
 | Builds 32-bit | Untested | Untested | Untested |
+| Runs 64-bit | Yes | Untested | Untested |
+| Runs 32-bit | Untested | Untested | Untested |
 
 Running emulator using 'Apple IIgs Dealer Diagnostics_v3.0.po' on Windows. 
 
