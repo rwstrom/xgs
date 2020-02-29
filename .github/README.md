@@ -69,10 +69,39 @@ your xgs.rom file into the same folder as the xgs.exe
 then double click on the exe.
 ```
 # Status
-It runs on windows 10 but I have yet to try it on other platforms.
 
-Currently the emulator successfully boots to an AppleSoft prompt.
+| OS  | Windows 10 | Ubuntu | OSX 10.15 |
+| --- |     ---    |  ---   |   ---     |
+| Builds 64-bit | Yes     | Yes    | Yes |
+| Builds 32-bit | Untested | Untested | Untested |
 
-This code will be very much in flux for the next few months as I continue to
-debug, improve, and streamline the code base.
+Running emulator using 'Apple IIgs Dealer Diagnostics_v3.0.po' on Windows. 
 
+| Test | Result | Notes |
+| ---  | ---    |  ---  |
+| ROM  | Fail |       |
+| Speed/Interrupt| Fail | Program hangs.|
+| MMU/IOU | Fail | Program crash.|
+| Main RAM | Fail | |
+| Expansion RAM | Fail| |
+| Clock Ram | Fail| |
+| Serial Port internal| Fail| Unimplemented feature |
+| Serial Port crystal | Fail| Unimplemented feature |
+| Sound circuitry | Pass  | |
+| Sound speaker tone | Pass | |
+| **Video pattern:** | | |
+| Color bar | Pass | |
+| Character generator| Fail | Prodos pathname error |
+| 80/40 column | Pass | |
+| Low resolution graphics| Pass| |
+| High resolution graphics| Pass | |
+| Double High resoulution | Fail | |
+| Super High Resolution | Pass | |
+| Screen/Text colors | Pass | |
+| **Keyboard/Mouse:**| | |
+| ADB keyboard| Fail | Prodos Error #80 |
+| Standard IIe keyboard | Fail| Prodos Error #80 |
+| Extended IIe keyboard | Fail | Prodos Error #80 |
+| Numeric keypad IIe | Fail | Prodos Error #80 |
+| ADB mouse | Pass | |
+| Joystick/Paddle | Pass | Button press only | 
