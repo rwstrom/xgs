@@ -149,7 +149,7 @@ void Mega2::updateMemoryMaps()
     for (page = 0x0020 ; page < 0x0040 ; page++) {
         system->setShadowed(page, sw_shadow_hires1);
     }
-    for (page = 0x0060 ; page < 0x0080 ; page++) {
+    for (page = 0x0040 ; page < 0x0060 ; page++) {
         system->setShadowed(page, sw_shadow_hires2);
     }
     for (page = 0x0104 ; page < 0x0108 ; page++) {
