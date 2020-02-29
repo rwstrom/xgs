@@ -165,7 +165,7 @@ void Mega2::updateMemoryMaps()
         system->setShadowed(page, (sw_shadow_hires2 && sw_shadow_aux) || sw_shadow_super);
     }
     for (page = 0x0160 ; page < 0x01A0 ; page++) {
-        system->setShadowed(page, sw_shadow_aux || sw_shadow_super);
+        system->setShadowed(page,sw_shadow_super);
     }
 }
 
@@ -333,6 +333,34 @@ uint8_t Mega2::read(const unsigned int& offset)
         case 0x46:
             val = sw_diagtype;
 
+            break;
+        case 0x58: 
+            sw_annunciator[0] = false;
+            break;
+        case 0x59: 
+            sw_annunciator[0] = true;
+            break;
+        case 0x5A: 
+            sw_annunciator[1] = false;
+            break;
+        case 0x5B: 
+            sw_annunciator[1] = true;
+            break;
+        case 0x5C: 
+            sw_annunciator[2] = false;
+            break;
+        case 0x5D: 
+            sw_annunciator[2] = true;
+            break;
+        case 0x5E: 
+            sw_annunciator[3] = false;
+            sw_diagtype |= 0x20;
+            vgc->modeChanged();
+            break;
+        case 0x5F: 
+            sw_annunciator[3] = true;
+            sw_diagtype &= ~0x20;
+            vgc->modeChanged();
             break;
 
         case 0x68:
@@ -560,6 +588,35 @@ void Mega2::write(const unsigned int& offset, const uint8_t& val)
 
             sw_diagtype &= ~0x18;
 
+            break;
+
+        case 0x58:
+            sw_annunciator[0] = false;
+            break;
+        case 0x59:
+            sw_annunciator[0] = true;
+            break;
+        case 0x5A:
+            sw_annunciator[1] = false;
+            break;
+        case 0x5B:
+            sw_annunciator[1] = true;
+            break;
+        case 0x5C: 
+            sw_annunciator[2] = false;
+            break;
+        case 0x5D: 
+            sw_annunciator[2] = true;
+            break;
+        case 0x5E: 
+            sw_annunciator[3] = false;
+            sw_diagtype |= 0x20;
+            vgc->modeChanged();
+            break;
+        case 0x5F:
+            sw_annunciator[3] = true;
+            sw_diagtype &= ~0x20;
+            vgc->modeChanged();
             break;
 
         case 0x68:
