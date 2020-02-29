@@ -36,7 +36,7 @@ jobs:
             cd build
             cmake ..
             make
-      - name: Failed
+      - name: On-Failure
         if: failure()
         run: cat build/compile_commands.json
          
