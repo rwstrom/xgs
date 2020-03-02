@@ -374,7 +374,8 @@ bool Emulator::loadConfig(const int argc, const char **argv)
     string font40_file;
     string font80_file;
 
-#ifndef _WIN32 //assume unix style layout for non-window systems 
+#ifndef _WIN32 //assume unix style layout for non-window systems
+    const char *p = nullptr;
     if ((p = std::getenv("XGS_DATA_HOME") )) {
         data_dir = path(p);
     }
