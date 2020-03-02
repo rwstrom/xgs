@@ -191,21 +191,11 @@ uint8_t VGC::read(const unsigned int& offset)
             break;
         case 0x56:
             sw_hires = false;
-            sw_dblres = false;
             modeChanged();
 
             break;
         case 0x57:
             sw_hires = true;
-            if(mega2->sw_annunciator[3])
-            {
-                sw_dblres = true;
-            }
-            else
-            {
-                sw_dblres = false;
-                
-            }
             modeChanged();
 
             break;
@@ -328,17 +318,11 @@ void VGC::write(const unsigned int& offset, const uint8_t& val)
             break;
         case 0x56:
             sw_hires = false;
-            sw_dblres = false;
             modeChanged();
 
             break;
         case 0x57:
             sw_hires = true;
-            if(mega2->sw_annunciator[3])
-            {
-                sw_dblres = true;
-            }
-            
             modeChanged();
 
             break;
@@ -392,7 +376,7 @@ void VGC::modeChanged()
         }
         else {
             if (sw_hires) {
-                if (sw_80col && sw_dblres) {
+                if (sw_80col && mega2->sw_annunciator[3]) {
                     new_mode = &mode_dbl_hires;
                 }
                 else {
