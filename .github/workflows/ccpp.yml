@@ -49,5 +49,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install-deps
-      run: vcpkg install sdl2-dev
+      run: vcpkg search sdl2
         
