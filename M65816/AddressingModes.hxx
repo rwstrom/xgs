@@ -145,8 +145,8 @@ void getAddress_alxx()
 
     address += X;
 
-    operand_addr = address;
-    operand_bank = address >> 16;
+    operand_addr = static_cast<uint16_t>(address);
+    operand_bank = static_cast<uint8_t>(address >> 16);
 
     PC += 3;
 }
