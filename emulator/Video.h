@@ -14,14 +14,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 struct TriangleVertex {
-    GLfloat coord[2];
-    GLfloat tex[2];
+    GLfloat coord[2] = {0.0f};
+    GLfloat tex[2] = {0.0f};
 };
 
 class Video {
     public:
-        SDL_Window    *window;
-        SDL_GLContext context;
+        SDL_Window    *window = nullptr;
+        SDL_GLContext context = nullptr;
 
         float frame_width, frame_height;
         float frame_left, frame_right, frame_top, frame_bottom;

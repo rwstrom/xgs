@@ -55,10 +55,10 @@ class System {
         // only be accessed via a read or write mapping.
         static constexpr unsigned int kIOPage = kMaxPage + 1;
 
-        bool is_rom03;
+        bool is_rom03 = false;
 
-        unsigned int read_map[kNumPages];
-        unsigned int write_map[kNumPages];
+        unsigned int read_map[kNumPages] = {0};
+        unsigned int write_map[kNumPages] = {0};
 
         MemoryPage memory[kNumPages];
 
@@ -70,17 +70,17 @@ class System {
         Device *cop_handler[256] = {nullptr};
         Device *wdm_handler[256] = {nullptr};
 
-        bool irq_states[16];
+        bool irq_states[16] = {false};
 
         void updateIRQ();
 
     public:
         vbls_t vbl_count = 0;
 
-        M65816::Processor *cpu;
+        M65816::Processor *cpu = nullptr;
 
 #ifdef ENABLE_DEBUGGER
-        Debugger *debugger;
+        Debugger *debugger = nullptr;
 #endif
 
         System(const bool);

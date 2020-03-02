@@ -67,33 +67,30 @@ class Emulator {
 #endif
         
 
-        System* sys;
-        M65816::Processor* cpu;
+        System* sys             = nullptr;
+        M65816::Processor* cpu  = nullptr;
+        Video *video            = nullptr;
+        ADB*   adb              = nullptr;
+        DOC*   doc              = nullptr;
+        IWM*   iwm              = nullptr;
+        Mega2* mega2            = nullptr;
+        Smartport* smpt         = nullptr;
+        VGC*   vgc              = nullptr;
 
-        Video *video;
+        uint8_t *rom        = nullptr;
+        uint8_t *fast_ram   = nullptr;
+        uint8_t *slow_ram   = nullptr;
 
-        ADB*   adb;
-        DOC*   doc;
-        IWM*   iwm;
-        Mega2* mega2;
-        Smartport* smpt;
-        VGC*   vgc;
+        unsigned int rom_start_page = 0;
+        unsigned int rom_pages = 0;
+        unsigned int fast_ram_pages = 0;
 
-        uint8_t *rom;
-        unsigned int rom_start_page;
-        unsigned int rom_pages;
+        bool rom03 = false;
+        bool use_debugger = false;
+        bool pal = false;
 
-        uint8_t *fast_ram;
-        unsigned int fast_ram_pages;
-
-        uint8_t *slow_ram;
-
-        bool rom03;
-        bool use_debugger;
-        bool pal;
-
-        uint8_t font_40col[kFont40Bytes * 2];
-        uint8_t font_80col[kFont80Bytes * 2];
+        uint8_t font_40col[kFont40Bytes * 2] = {0};
+        uint8_t font_80col[kFont80Bytes * 2] = {0};
 
         std::string s5d1;
         std::string s5d2;
@@ -102,25 +99,24 @@ class Emulator {
         std::string hd[kSmartportUnits];
 
         struct {
-            bool trace;
+            bool trace = false;
         } debugger;
 
-        bool running;
-        bool fullscreen;
+        bool running        = false;
+        bool fullscreen     = false;
         bool show_status_bar = true;
-        bool show_menu = false;
+        bool show_menu      = false;
 
-        float maximum_speed;
-        float actual_speed;
-        float target_speed;
+        float maximum_speed = 0.0f;
+        float actual_speed = 0.0f;
+        float target_speed = 0.0f;
 
-        unsigned int timer_interval;
-        int timer_fd;
+        unsigned int timer_interval = 0;
 
         // The number of frames to produce every second
-        unsigned int framerate;
+        unsigned int framerate = 0;
 
-        unsigned int current_frame;
+        unsigned int current_frame = 0;
 
         /**
          * To maintain sync we need 32 DOC cycles (38us) 
@@ -135,14 +131,14 @@ class Emulator {
             2
         };
 
-        long times[60];
-        long last_time;
-        long this_time;
-        long total_time;
+        long times[60] = {0};
+        long last_time = 0;
+        long this_time = 0;
+        long total_time = 0;
 
-        cycles_t cycles[60];
-        cycles_t last_cycles;
-        cycles_t total_cycles;
+        cycles_t cycles[60] = {0};
+        cycles_t last_cycles = 0;
+        cycles_t total_cycles = 0;
 
         void pollForEvents();
 
