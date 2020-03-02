@@ -16,7 +16,8 @@ inline void stackPull(uint8_t& v)
 
 inline void stackPull(uint16_t& v)
 {
-    v = system->cpuRead(0, ++S + StackOffset, STACK) | (system->cpuRead(0, ++S + StackOffset, STACK) << 8);
+    v = system->cpuRead(0, ++S + StackOffset, STACK);
+    v |= (system->cpuRead(0, ++S + StackOffset, STACK) << 8);
 }
 
 inline void jumpTo(const uint16_t& addr)
@@ -58,7 +59,8 @@ inline void fetchImmediateOperand(uint8_t &op)
 
 inline void fetchImmediateOperand(uint16_t &op)
 {
-    op = system->cpuRead(PBR, PC++, INSTR) | (system->cpuRead(PBR, PC++, INSTR) << 8);
+    op = system->cpuRead(PBR, PC++, INSTR); 
+    op |= (system->cpuRead(PBR, PC++, INSTR) << 8);
 }
 
 inline void fetchOperand(uint8_t &op)
