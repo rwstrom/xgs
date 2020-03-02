@@ -49,7 +49,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install-deps
-      run: vcpkg search cmake
+      run: vcpkg install sdl2 sdl2_ttf
     - name: build
       run: |
           mkdir build
