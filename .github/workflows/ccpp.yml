@@ -44,7 +44,7 @@ jobs:
         if: failure()
         run: cat build/compile_commands.json
   Windows-Server-2019:
-    runs-on: windows-server-2019
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
