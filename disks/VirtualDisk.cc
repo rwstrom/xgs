@@ -14,7 +14,7 @@
 
 #include "disks/VirtualDisk.h"
 
-//#include <climits>
+#include <algorithm>
 #include <stdexcept>
 
 #include "emulator/common.h"
@@ -46,7 +46,9 @@ VirtualDisk::~VirtualDisk()
 
 void VirtualDisk::open()
 {
-    path ext = image_path.extension();
+    std::string ext = image_path.extension().generic_string();
+    // make extension case insensitive
+    std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
 
     // Try in r/w mode first, then try falling back to read-only before giving up
 
