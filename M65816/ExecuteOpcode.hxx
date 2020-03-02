@@ -1,10 +1,10 @@
-void executeOpcode(unsigned int opcode)
+void executeOpcode(const unsigned int opcode)
 {
     switch (opcode) {
         case 0x00:  /* BRK s */
             ++PC;
 
-            if (StackOffset) {
+            if constexpr(StackOffset != 0) {
                 stackPush(PC);
                 stackPush(uint8_t(SR | 0x10));  // set B bit on stack
             }
@@ -237,7 +237,7 @@ void executeOpcode(unsigned int opcode)
             break;
 
         case 0x1B:  /* TCS i */
-            if (StackOffset) {
+            if constexpr(StackOffset != 0) {
                 S = A;
             }
             else {
@@ -514,7 +514,7 @@ void executeOpcode(unsigned int opcode)
             // ignore M bit
             cpu->A.W = cpu->S.W;
 
-            if (StackOffset) {
+            if constexpr(StackOffset != 0) {
                 checkIfNegative(A);
                 checkIfZero(A);
             }
@@ -1500,7 +1500,7 @@ void executeOpcode(unsigned int opcode)
             break;
 
         case 0xBA:  /* TSX i */
-            X = S;
+            X = static_cast<IndexSizeType>(S);
 
             checkIfNegative(X);
             checkIfZero(X);
@@ -2055,7 +2055,7 @@ void executeOpcode(unsigned int opcode)
         case 0x100: /* irq */
             cpu->waiting = false;
 
-            if (StackOffset) {
+            if constexpr(StackOffset != 0) {
                 stackPush(PC);
                 stackPush((uint8_t) (SR & ~0x10));
             }

@@ -14,13 +14,17 @@ uint16_t wrapDirectPage(uint16_t address)
 
 void getAddress_a()
 {
-    operand_addr = system->cpuRead(PBR, PC++, INSTR) | (system->cpuRead(PBR, PC++, INSTR) << 8);
+    operand_addr = system->cpuRead(PBR, PC++, INSTR);
+    operand_addr |= (system->cpuRead(PBR, PC++, INSTR) << 8);
+    
     operand_bank = DBR;
 }
 
 void getAddress_al()
 {
-    operand_addr = system->cpuRead(PBR, PC++, INSTR) | (system->cpuRead(PBR, PC++, INSTR) << 8);
+    operand_addr = system->cpuRead(PBR, PC++, INSTR);
+    operand_addr |= (system->cpuRead(PBR, PC++, INSTR) << 8);
+    
     operand_bank = system->cpuRead(PBR, PC++, INSTR);
 }
 
@@ -141,8 +145,8 @@ void getAddress_alxx()
 
     address += X;
 
-    operand_addr = address;
-    operand_bank = address >> 16;
+    operand_addr = static_cast<uint16_t>(address);
+    operand_bank = static_cast<uint8_t>(address >> 16);
 
     PC += 3;
 }
@@ -157,7 +161,8 @@ void getAddress_pcr()
 
 void getAddress_pcrl()
 {
-    int16_t offset = system->cpuRead(PBR, PC++, INSTR) | (system->cpuRead(PBR, PC++, INSTR) << 8);
+    int16_t offset = system->cpuRead(PBR, PC++, INSTR);
+    offset |= (system->cpuRead(PBR, PC++, INSTR) << 8);
 
     operand_addr = PC + offset;
     operand_bank = PBR;
