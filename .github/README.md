@@ -81,9 +81,9 @@ Running emulator using 'Apple IIgs Dealer Diagnostics_v3.0.po' on Windows.
 
 | Test | Result | Notes |
 | ---  | ---    |  ---  |
-| ROM  | Fail |       |
-| Speed/Interrupt| Fail | Program hangs.|
-| MMU/IOU | Fail | Crash to monitor.|
+| ROM  | Fail |      |
+| Speed/Interrupt| Fail | |
+| MMU/IOU | Pass | |
 | Main RAM | Pass | |
 | Expansion RAM | Fail| |
 | Clock Ram | Fail| |
