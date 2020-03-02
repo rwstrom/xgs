@@ -21,6 +21,10 @@ jobs:
             cd build
             cmake ..
             make
+      - name: On-Failure
+      if: failure()
+      run: cat build/compile_commands.json
+
   MacOs-Build:
       runs-on: macos-latest
 
@@ -39,5 +43,11 @@ jobs:
       - name: On-Failure
         if: failure()
         run: cat build/compile_commands.json
-         
+  Windows-Server-2019:
+    runs-on: windows-server-2019
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install-deps
+      run: vcpkg install sdl2-dev
         
