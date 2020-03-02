@@ -20,6 +20,11 @@ add_definitions(-DVERSION_MAJOR=${xgs_VERSION_MAJOR}
                 -DVERSION_MINOR=${xgs_VERSION_MINOR}
                 -DENABLE_DEBUGGER )
 
+if(MSVC)
+    add_definitions(/W4)
+else()
+    add_definitions(-Wall)
+endif()
                 
 # Test endianness of the target system
 INCLUDE (${CMAKE_ROOT}/Modules/TestBigEndian.cmake)
