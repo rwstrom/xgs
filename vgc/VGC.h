@@ -127,8 +127,8 @@ class VGC : public Device {
 
         unsigned int sw_vgcint;
 
-        bool sw_vert_cnt;
-        bool sw_horiz_cnt;
+        uint16_t sw_vert_cnt = 0;
+        uint8_t sw_horiz_cnt = 0;
 
         bool sw_onesecirq_enable;
         bool sw_scanirq_enable;
