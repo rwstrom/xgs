@@ -101,7 +101,7 @@ void Mega2::updateMemoryMaps()
         system->mapWrite(page, sw_auxwr? page + 0x0100 : page);
     }
     for (page = 0x0020 ; page < 0x0040 ; page++) {
-        if (sw_80store && vgc->sw_hires) {
+        if (sw_80store && (vgc->sw_hires || !sw_annunciator[3]/*||vgc->sw_dblres*/)) {
             system->mapRead(page,  vgc->sw_page2? page + 0x0100 : page);
             system->mapWrite(page, vgc->sw_page2? page + 0x0100 : page);
         }
@@ -149,7 +149,7 @@ void Mega2::updateMemoryMaps()
     for (page = 0x0020 ; page < 0x0040 ; page++) {
         system->setShadowed(page, sw_shadow_hires1);
     }
-    for (page = 0x0060 ; page < 0x0080 ; page++) {
+    for (page = 0x0040 ; page < 0x0060 ; page++) {
         system->setShadowed(page, sw_shadow_hires2);
     }
     for (page = 0x0104 ; page < 0x0108 ; page++) {
@@ -159,13 +159,13 @@ void Mega2::updateMemoryMaps()
         system->setShadowed(page, sw_shadow_text2);
     }
     for (page = 0x0120 ; page < 0x0140 ; page++) {
-        system->setShadowed(page, (sw_shadow_hires1 && sw_shadow_aux) || sw_shadow_super);
+        system->setShadowed(page, (sw_shadow_hires1 || sw_shadow_aux || sw_shadow_super));
     }
     for (page = 0x0140 ; page < 0x0160 ; page++) {
-        system->setShadowed(page, (sw_shadow_hires2 && sw_shadow_aux) || sw_shadow_super);
+        system->setShadowed(page, (sw_shadow_hires2 || sw_shadow_aux || sw_shadow_super));
     }
     for (page = 0x0160 ; page < 0x01A0 ; page++) {
-        system->setShadowed(page, sw_shadow_aux || sw_shadow_super);
+        system->setShadowed(page,sw_shadow_super);
     }
 }
 
@@ -332,7 +332,41 @@ uint8_t Mega2::read(const unsigned int& offset)
 
         case 0x46:
             val = sw_diagtype;
+            if(adb->ski_button0 || adb->ski_button1) val|= 0x80;
+            if(sw_annunciator[3]) val |= 0x20;
+            if(adb->sw_m2mouseswirq) val |= 0x02;
+            if(adb->sw_m2mousemvirq) val |= 0x01;
 
+            break;
+        case 0x58: 
+            sw_annunciator[0] = false;
+            break;
+        case 0x59: 
+            sw_annunciator[0] = true;
+            break;
+        case 0x5A: 
+            sw_annunciator[1] = false;
+            break;
+        case 0x5B: 
+            sw_annunciator[1] = true;
+            break;
+        case 0x5C: 
+            sw_annunciator[2] = false;
+            break;
+        case 0x5D: 
+            sw_annunciator[2] = true;
+            break;
+        case 0x5E: 
+            sw_annunciator[3] = false;
+            vgc->sw_dblres = true;
+            sw_diagtype &= ~0x20;
+            vgc->modeChanged();
+            break;
+        case 0x5F: 
+            sw_annunciator[3] = true;
+            vgc->sw_dblres = false;
+            sw_diagtype |= 0x20;
+            vgc->modeChanged();
             break;
 
         case 0x68:
@@ -344,14 +378,6 @@ uint8_t Mega2::read(const unsigned int& offset)
             if (sw_auxrd)      val |= 0x20;
             if (vgc->sw_page2) val |= 0x40;
             if (sw_altzp)      val |= 0x80;
-            break;
-
-        case 0x80:
-            sw_lcbank2 = true;
-            sw_lcread  = true;
-            sw_lcwrite = false;
-
-            updateMemoryMaps();
 
             break;
 
@@ -372,69 +398,36 @@ uint8_t Mega2::read(const unsigned int& offset)
         case 0x7F:
             val = system->getPage(0xFFC0).read[offset];
             break;
-        case 0x81:
-            sw_lcbank2 = true;
-            sw_lcread  = false;
-
-            if (last_access == offset) sw_lcwrite = true;
-
-            updateMemoryMaps();
-
-            break;
-
+//lc even address access
+        case 0x80:
         case 0x82:
-            sw_lcbank2 = true;
-            sw_lcread  = false;
-            sw_lcwrite = false;
-
-            updateMemoryMaps();
-
-            break;
-
-        case 0x83:
-            sw_lcbank2 = true;
-            sw_lcread  = true;
-            if (last_access == offset) sw_lcwrite = true;
-
-            updateMemoryMaps();
-
-            break;
-
+        case 0x84:
+        case 0x86:
         case 0x88:
-            sw_lcbank2 = false;
-            sw_lcread  = true;
-            sw_lcwrite = false;
-
-            updateMemoryMaps();
-
-            break;
-
-        case 0x89:
-            sw_lcbank2 = false;
-            sw_lcread  = false;
-            if (last_access == offset) sw_lcwrite = true;
-
-            updateMemoryMaps();
-
-            break;
-
         case 0x8A:
-            sw_lcbank2 = false;
-            sw_lcread  = false;
+        case 0x8C:
+        case 0x8E: 
+            sw_lcbank2 = offset >= 0x88? false:true;
             sw_lcwrite = false;
-
+            sw_lcread = !(offset & 2);
             updateMemoryMaps();
 
             break;
-
+        //lc odd address access
+        case 0x81:
+        case 0x83:
+        case 0x85:
+        case 0x87:
+        case 0x89:
         case 0x8B:
-            sw_lcbank2 = false;
-            sw_lcread  = true;
+        case 0x8D:
+        case 0x8F:
+            sw_lcbank2 = offset >= 0x88? false:true;
+            sw_lcread = (offset & 2);
             if (last_access == offset) sw_lcwrite = true;
-
             updateMemoryMaps();
 
-            break;
+        break; 
 
         default:
             break;
@@ -562,6 +555,37 @@ void Mega2::write(const unsigned int& offset, const uint8_t& val)
 
             break;
 
+        case 0x58:
+            sw_annunciator[0] = false;
+            break;
+        case 0x59:
+            sw_annunciator[0] = true;
+            break;
+        case 0x5A:
+            sw_annunciator[1] = false;
+            break;
+        case 0x5B:
+            sw_annunciator[1] = true;
+            break;
+        case 0x5C: 
+            sw_annunciator[2] = false;
+            break;
+        case 0x5D: 
+            sw_annunciator[2] = true;
+            break;
+        case 0x5E: 
+            sw_annunciator[3] = false;
+            sw_diagtype &= ~0x20;
+            vgc->sw_dblres = true;
+            vgc->modeChanged();
+            break;
+        case 0x5F:
+            sw_annunciator[3] = true;
+            sw_diagtype |= 0x20;
+            vgc->sw_dblres = false;
+            vgc->modeChanged();
+            break;
+
         case 0x68:
             sw_intcxrom   = val & 0x01;
             sw_rombank    = val & 0x02;
@@ -574,80 +598,37 @@ void Mega2::write(const unsigned int& offset, const uint8_t& val)
 
             // FIXME: tell vgc that page2 changed
             updateMemoryMaps();
-
+            vgc->modeChanged();
             break;
 
+        //lc access even address
         case 0x80:
-            sw_lcbank2 = true;
-            sw_lcread  = true;
-            sw_lcwrite = false;
-
-            updateMemoryMaps();
-
-            break;
-
-        case 0x81:
-            sw_lcbank2 = true;
-            sw_lcread  = false;
-            if (last_access == offset) sw_lcwrite = true;
-
-            updateMemoryMaps();
-
-            break;
-
         case 0x82:
-            sw_lcbank2 = true;
-            sw_lcread  = false;
-            sw_lcwrite = false;
-
-            updateMemoryMaps();
-
-            break;
-
-        case 0x83:
-            sw_lcbank2 = true;
-            sw_lcread  = true;
-            if (last_access == offset) sw_lcwrite = true;
-
-            updateMemoryMaps();
-
-            break;
-
+        case 0x84:
+        case 0x86:
         case 0x88:
-            sw_lcbank2 = false;
-            sw_lcread  = true;
-            sw_lcwrite = false;
-
-            updateMemoryMaps();
-
-            break;
-
-        case 0x89:
-            sw_lcbank2 = false;
-            sw_lcread  = false;
-            if (last_access == offset) sw_lcwrite = true;
-
-            updateMemoryMaps();
-
-            break;
-
         case 0x8A:
-            sw_lcbank2 = false;
-            sw_lcread  = false;
+        case 0x8C:
+        case 0x8E: 
+            sw_lcbank2 = offset >= 0x88? false:true;
             sw_lcwrite = false;
-
+            sw_lcread = !(offset & 2);
             updateMemoryMaps();
-
             break;
-
+        //lc access odd address
+        case 0x81:
+        case 0x83:
+        case 0x85:
+        case 0x87:
+        case 0x89:
         case 0x8B:
-            sw_lcbank2 = false;
-            sw_lcread  = true;
+        case 0x8D:
+        case 0x8F:
+            sw_lcbank2 = offset >= 0x88? false:true;
+            sw_lcread = (offset & 2);
             if (last_access == offset) sw_lcwrite = true;
-
             updateMemoryMaps();
-
-            break;
+        break;
     }
 
     last_access = offset;
