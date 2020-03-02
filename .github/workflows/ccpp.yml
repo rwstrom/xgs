@@ -22,8 +22,8 @@ jobs:
             cmake ..
             make
       - name: On-Failure
-      if: failure()
-      run: cat build/compile_commands.json
+        if: failure()
+        run: cat build/compile_commands.json
 
   MacOs-Build:
       runs-on: macos-latest
