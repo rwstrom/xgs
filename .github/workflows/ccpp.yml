@@ -43,20 +43,20 @@ jobs:
       - name: On-Failure
         if: failure()
         run: cat build/compile_commands.json
-  Windows-Server-2019:
-    runs-on: windows-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: install-deps
-      run: vcpkg install sdl2 sdl2-ttf
-    - name: build
-      run: |
-          mkdir build
-          cd build
-          cmake ..
-    - name: On-Fail
-      if: failure()
-      run: type build/compile_commands.json
+#  Windows-Server-2019:
+#    runs-on: windows-latest
+#
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: install-deps
+#      run: vcpkg install sdl2 sdl2-ttf
+#    - name: build
+#      run: |
+#          mkdir build
+#          cd build
+#          cmake ..
+#    - name: On-Fail
+#      if: failure()
+#      run: type build/compile_commands.json
       
         
