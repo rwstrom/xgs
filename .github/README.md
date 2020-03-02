@@ -83,8 +83,8 @@ Running emulator using 'Apple IIgs Dealer Diagnostics_v3.0.po' on Windows.
 | ---  | ---    |  ---  |
 | ROM  | Fail |       |
 | Speed/Interrupt| Fail | Program hangs.|
-| MMU/IOU | Fail | Program crash.|
-| Main RAM | Fail | |
+| MMU/IOU | Fail | Crash to monitor.|
+| Main RAM | Pass | |
 | Expansion RAM | Fail| |
 | Clock Ram | Fail| |
 | Serial Port internal| Fail| Unimplemented feature |
@@ -97,7 +97,7 @@ Running emulator using 'Apple IIgs Dealer Diagnostics_v3.0.po' on Windows.
 | 80/40 column | Pass | |
 | Low resolution graphics| Pass| |
 | High resolution graphics| Pass | |
-| Double High resoulution | Fail | |
+| Double High resoulution | Pass | |
 | Super High Resolution | Pass | |
 | Screen/Text colors | Pass | |
 | **Keyboard/Mouse:**| | |
