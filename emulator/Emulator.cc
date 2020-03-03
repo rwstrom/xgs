@@ -214,7 +214,7 @@ void Emulator::tick()
     unsigned int cycles_per = static_cast<unsigned int>( (1000000/(VGC::kLinesPerFrame * framerate)) * target_speed );
 
     for (unsigned int line = 0; line < VGC::kLinesPerFrame ; ++line) {
-        unsigned int num_cycles = cpu->runUntil(cycles_per);
+        cpu->runUntil(cycles_per);
 
         for (unsigned int dt = 0 ; dt < doc_ticks[line % 19] ; ++dt) {
             doc->microtick(0);
@@ -369,13 +369,13 @@ unsigned int Emulator::loadFile(const std::string& filename, const unsigned int 
 
 bool Emulator::loadConfig(const int argc, const char **argv)
 {
-    const char *p = nullptr;
     unsigned int ram_size;
     string rom_file;
     string font40_file;
     string font80_file;
 
-#ifndef _WIN32 //assume unix style layout for non-window systems 
+#ifndef _WIN32 //assume unix style layout for non-window systems
+    const char *p = nullptr;
     if ((p = std::getenv("XGS_DATA_HOME") )) {
         data_dir = path(p);
     }

@@ -5,8 +5,8 @@ inline void stackPush(const uint8_t& v)
 
 inline void stackPush(const uint16_t& v)
 {
-    system->cpuWrite(0, S-- + StackOffset, v >> 8, STACK);
-    system->cpuWrite(0, S-- + StackOffset, v, STACK);
+    system->cpuWrite(0, S-- + StackOffset, static_cast<uint8_t>(v >> 8), STACK);
+    system->cpuWrite(0, S-- + StackOffset, static_cast<uint8_t>(v), STACK);
 }
 
 inline void stackPull(uint8_t& v)
@@ -16,7 +16,8 @@ inline void stackPull(uint8_t& v)
 
 inline void stackPull(uint16_t& v)
 {
-    v = system->cpuRead(0, ++S + StackOffset, STACK) | (system->cpuRead(0, ++S + StackOffset, STACK) << 8);
+    v = system->cpuRead(0, ++S + StackOffset, STACK);
+    v |= (system->cpuRead(0, ++S + StackOffset, STACK) << 8);
 }
 
 inline void jumpTo(const uint16_t& addr)
@@ -32,15 +33,21 @@ inline void jumpTo(const uint8_t& bank, const uint16_t& addr)
 
 inline void checkDataPageCross(const uint16_t& check)
 {
-    if ((StackOffset > 0) && ((check & 0xFF00) != (operand_addr & 0xFF00))) {
-        cpu->num_cycles++;
+    if constexpr(StackOffset > 0)
+    {
+        if ( (check & 0xFF00) != (operand_addr & 0xFF00) ) {
+            cpu->num_cycles++;
+        }
     }
 }
 
 inline void checkProgramPageCross()
 {
-    if ((StackOffset > 0) && ((PC & 0xFF00) != (operand_addr & 0xFF00))) {
-        cpu->num_cycles++;
+    if constexpr(StackOffset > 0)
+    {
+        if ( (PC & 0xFF00) != (operand_addr & 0xFF00)) {
+            cpu->num_cycles++;
+        }
     }
 }
 
@@ -58,7 +65,8 @@ inline void fetchImmediateOperand(uint8_t &op)
 
 inline void fetchImmediateOperand(uint16_t &op)
 {
-    op = system->cpuRead(PBR, PC++, INSTR) | (system->cpuRead(PBR, PC++, INSTR) << 8);
+    op = system->cpuRead(PBR, PC++, INSTR); 
+    op |= (system->cpuRead(PBR, PC++, INSTR) << 8);
 }
 
 inline void fetchOperand(uint8_t &op)
@@ -79,7 +87,7 @@ inline void storeOperand(uint8_t &op)
 
 inline void storeOperand(uint16_t &op)
 {
-    system->cpuWrite(operand_bank, operand_addr, op, OPERAND);
+    system->cpuWrite(operand_bank, operand_addr, static_cast<uint8_t>(op), OPERAND);
     system->cpuWrite(operand_bank, operand_addr + 1, op >> 8, OPERAND);
 }
 
@@ -300,7 +308,7 @@ inline void op_LDY()
 
 inline void op_STA()
 {
-    system->cpuWrite(operand_bank, operand_addr, A, DATA);
+    system->cpuWrite(operand_bank, operand_addr, static_cast<uint8_t>(A), DATA);
 
     if constexpr(sizeof(MemSizeType) == 2) {
         system->cpuWrite(operand_bank, operand_addr + 1, A >> 8, DATA);
@@ -309,7 +317,7 @@ inline void op_STA()
 
 inline void op_STX()
 {
-    system->cpuWrite(operand_bank, operand_addr, X, DATA);
+    system->cpuWrite(operand_bank, operand_addr, static_cast<uint8_t>(X), DATA);
 
     if constexpr(sizeof(IndexSizeType) == 2) {
         system->cpuWrite(operand_bank, operand_addr + 1, X >> 8, DATA);
@@ -318,7 +326,7 @@ inline void op_STX()
 
 inline void op_STY()
 {
-    system->cpuWrite(operand_bank, operand_addr, Y, DATA);
+    system->cpuWrite(operand_bank, operand_addr, static_cast<uint8_t>(Y), DATA);
 
     if constexpr(sizeof(IndexSizeType) == 2) {
         system->cpuWrite(operand_bank, operand_addr + 1, Y >> 8, DATA);
@@ -391,7 +399,7 @@ inline void op_ADC()
 
     SR.V = (A ^ sum) & (operand.m ^ sum) & n_bit;
 
-    A = sum;
+    A = static_cast<MemSizeType>(sum);
 
     checkIfNegative(A);
     checkIfZero(A);
