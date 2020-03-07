@@ -62,7 +62,7 @@ uint8_t Disk525::read(const cycles_t cycle_count)
 {
     if (vdisk == nullptr) return (cycle_count & 0xFF) | 0x80;
 
-    DiskTrack& track = tracks[current_track];
+    DiskTrack& track = tracks[current_track*4];
     loadTrack(track);
 
     if (!track.valid) return (cycle_count & 0xFF) | 0x80;
@@ -204,7 +204,7 @@ void Disk525::loadTrack(DiskTrack& track)
                 track.write(0xEB, 8, pos);
 
                 // Inter-sector sync
-                track.write(0xFF, 8, pos);
+                //track.write(0xFF, 8, pos);
                 track.write(0xFF, 10, pos);
                 track.write(0xFF, 10, pos);
                 track.write(0xFF, 10, pos);
@@ -224,7 +224,7 @@ void Disk525::loadTrack(DiskTrack& track)
 
                 int x;
 
-                for (i = 0x101, x = 0x55 ; i >= 0 ; --i) {
+                for (int i = 0x101, x = 0x55 ; i >= 0 ; --i) {
                     uint8_t v1 = (i >= 0x100)? 0 : in[i];
                     uint8_t v2 = (aux_buf[x] << 1) + (v1 & 1);
 
@@ -352,7 +352,7 @@ void Disk525::flushTrack(DiskTrack& track)
             val = disk_to_nibble[track.read(pos)];
             if (val != prev_val) return;
 
-            unsigned int x = 0x55;
+            int x = 0x55;
 
             // Now merge aux_buf into buf
             for (i = 0 ; i < kSectorSize ; ++i) {
