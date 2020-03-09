@@ -62,7 +62,7 @@ uint8_t Disk525::read(const cycles_t cycle_count)
 {
     if (vdisk == nullptr) return (cycle_count & 0xFF) | 0x80;
 
-    DiskTrack& track = tracks[current_track*4];
+    DiskTrack& track = tracks[current_track];
     loadTrack(track);
 
     if (!track.valid) return (cycle_count & 0xFF) | 0x80;
