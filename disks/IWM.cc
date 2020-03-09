@@ -226,8 +226,6 @@ void IWM::touchSwitches(const unsigned int loc)
 {
     if (loc < 8) {
         unsigned int phase = loc >> 1;
-        unsigned int phase_up   = (phase - 1) & 3;
-        unsigned int phase_down = (phase + 1) & 3;
         bool on = loc & 1;
 
         iwm_phase[phase] = on;
