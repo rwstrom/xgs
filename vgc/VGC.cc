@@ -376,7 +376,7 @@ void VGC::modeChanged()
         }
         else {
             if (sw_hires) {
-                if (sw_80col && mega2->sw_annunciator[3]) {
+                if (sw_80col && !mega2->sw_annunciator[3]) {
                     new_mode = &mode_dbl_hires;
                 }
                 else {
