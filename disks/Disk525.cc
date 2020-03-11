@@ -43,7 +43,7 @@ static const uint8_t physical_to_logical[2][16] = {
 
 Disk525::Disk525()
 {
-    for (unsigned int i = 0 ; i < kNumTracks * 4; ++i) {
+    for (uint8_t i = 0 ; i < kNumTracks * 4; ++i) {
         tracks[i].track_num = i >> 2;
     }
 }
@@ -163,14 +163,13 @@ void Disk525::loadTrack(DiskTrack& track)
     if (track.nibble_data != nullptr) return;
 
     try {
-        unsigned int i;
 
         track.allocate(kNibblesPerTrack);
 
         if (vdisk->format == NIBBLE) {
             vdisk->read(track.nibble_data, track.track_num, 1);
 
-            for (i = 0 ; i < track.track_len ; ++i) {
+            for (unsigned int i = 0 ; i < track.track_len ; ++i) {
                 track.nibble_size[i] = 8;
             }
         }
@@ -179,11 +178,11 @@ void Disk525::loadTrack(DiskTrack& track)
 
             pos = 0;
 
-            for (unsigned int sector = 0; sector < kSectorsPerTrack; ++sector) {
+            for (uint8_t sector = 0; sector < kSectorsPerTrack; ++sector) {
                 unsigned int num_sync = sector? 14 : 70;
                 unsigned int logical_sector = physical_to_logical[vdisk->format][sector];
 
-                for (i = 0; i < num_sync; ++i) {
+                for (unsigned i = 0; i < num_sync; ++i) {
                     track.write(0xFF, 10, pos);
                 }
 
@@ -220,9 +219,9 @@ void Disk525::loadTrack(DiskTrack& track)
                 uint8_t *nib_out = nib_buff + 0x56;
                 uint8_t *in      = track_buffer + (logical_sector * kSectorSize);
 
-                for (i = 0 ; i < 0x56 ; ++i) aux_buf[i] = 0;
+                for (auto i = 0 ; i < 0x56 ; ++i) aux_buf[i] = 0;
 
-                int x;
+               
 
                 for (int i = 0x101, x = 0x55 ; i >= 0 ; --i) {
                     uint8_t v1 = (i >= 0x100)? 0 : in[i];
@@ -241,7 +240,7 @@ void Disk525::loadTrack(DiskTrack& track)
 
                 uint8_t val, last = 0;
 
-                for (i = 0 ; i < kNibblesPerSector ; ++i) {
+                for (auto i = 0 ; i < kNibblesPerSector ; ++i) {
                     val = nib_buff[i];
 
                     track.write(nibble_to_disk[last ^ val], 8, pos);
@@ -308,7 +307,7 @@ void Disk525::flushTrack(DiskTrack& track)
             if ((val = track.read(pos)) != 0xAA) continue;
             if ((val = track.read(pos)) != 0x96) continue;
 
-            uint8_t vol_num    = track.read_4x4(pos);
+            vol_num    = track.read_4x4(pos);
             uint8_t track_num  = track.read_4x4(pos);
             uint8_t sector_num = track.read_4x4(pos);
             uint8_t cksum      = track.read_4x4(pos);
@@ -331,7 +330,8 @@ void Disk525::flushTrack(DiskTrack& track)
 
             uint8_t *buf = buffer + (sector_num * kSectorSize);
             uint8_t aux_buf[0x80];
-            int prev_val = 0;
+
+            uint8_t prev_val = 0; // This never changes,was it meant to always be zero?
 
             for (i = 0x55 ; i >= 0; --i) {
                 val = disk_to_nibble[track.read(pos)];

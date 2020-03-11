@@ -52,7 +52,7 @@ static const unsigned int track_start[80] = {
 
 Disk35::Disk35()
 {
-    for (unsigned int i = 0 ; i < kNumTracks ; ++i) {
+    for (uint8_t i = 0 ; i < kNumTracks ; ++i) {
         tracks[0][i].track_num = tracks[1][i].track_num = i;
     }
 }

@@ -24,9 +24,9 @@ class DiskTrack {
         int overflow_size = 0;
         
         unsigned int track_len = 0;
-        unsigned int track_num = 0;
         unsigned int nibble_count = 0;
-
+        
+        std::uint8_t track_num = 0;
         std::uint8_t *nibble_size = nullptr;
         std::uint8_t *nibble_data = nullptr;
 
@@ -93,7 +93,7 @@ class DiskTrack {
          * The pos will be updated to the next buffer position, circling
          * around to the beginning if it passes the end of the track.
          */
-        void write(const uint8_t val, const unsigned int size, unsigned int& pos)
+        void write(const uint8_t val, const uint8_t size, unsigned int& pos)
         {
             nibble_size[pos] = size;
             nibble_data[pos] = val;

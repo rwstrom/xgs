@@ -43,7 +43,7 @@ private:
 
         // The fractional track # over which the virtual disk head currently rests.
         int current_track = 0;
-        unsigned int vol_num = 254;
+        uint8_t vol_num = 254;
 
         unsigned int last_phase = 0;
         unsigned int nib_pos    = 0;
