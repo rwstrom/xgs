@@ -22,7 +22,7 @@ class DblLores : public VideoMode {
             display_buffer[1] = odd;
         }
 
-        void renderLine(const unsigned int, pixel_t *);
+        void renderLine(const unsigned int, pixel_t *, bool mono = false);
 };
 
 #endif // DBLLORES_H_

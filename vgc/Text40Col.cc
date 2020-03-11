@@ -17,7 +17,7 @@
 
 #include "text_bases.h"
 
-void Text40Col::renderLine(const unsigned int line_number, pixel_t *line)
+void Text40Col::renderLine(const unsigned int line_number, pixel_t *line, bool)
 {
     const unsigned int screen_row = line_number / kFontHeight;
     const unsigned int font_row   = line_number % kFontHeight;

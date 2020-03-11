@@ -32,9 +32,9 @@ static const unsigned int dhr_color_map[4][16] = {
 
 
 // FIXME: pass value from VGC
-static bool vid_a2mono = false;
+//static bool vid_a2mono = false;
 
-void DblHires::renderLine(const unsigned int line_number, pixel_t *line)
+void DblHires::renderLine(const unsigned int line_number, pixel_t *line, bool mono)
 {
     unsigned int base = hires_bases[line_number];
 
@@ -46,7 +46,7 @@ void DblHires::renderLine(const unsigned int line_number, pixel_t *line)
 
 		const uint8_t val2 = (col == 19)? 0 : (display_buffer[0][base + 2] << 3);
 
-		if (vid_a2mono) {
+		if (mono) {
 			for (unsigned int i = 0 ; i < 28 ; ++i) {
                 *line++ = val & 1? standard_colors[15] : standard_colors[0];
 				val >>= 1;

@@ -18,7 +18,7 @@
 #include "text_bases.h"
 #include "standard_colors.h"
 
-void Lores::renderLine(const unsigned int line_number, pixel_t *line)
+void Lores::renderLine(const unsigned int line_number, pixel_t *line, bool)
 {
     const unsigned int screen_row = line_number / (kBlockHeight * 2);
     const bool is_top = (line_number % (kBlockHeight * 2)) < kBlockHeight;

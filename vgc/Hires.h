@@ -17,7 +17,7 @@ class Hires : public VideoMode {
             display_buffer = buffer;
         }
 
-        void renderLine(const unsigned int, pixel_t *);
+        void renderLine(const unsigned int, pixel_t *, bool mono = false);
 };
 
 #endif // HIRES_H_
