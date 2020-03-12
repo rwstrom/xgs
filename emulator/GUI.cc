@@ -389,7 +389,7 @@ void drawStatusBar(Emulator& emulator)
     ImGui::SameLine();
     ImGui::Checkbox("S6D1", &s6d1);
     ImGui::SameLine();
-    ImGui::Checkbox("S6D1", &s6d2);
+    ImGui::Checkbox("S6D2", &s6d2);
     ImGui::End();
 
     ImGui::PopStyleVar();
