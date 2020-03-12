@@ -54,7 +54,7 @@ static char applyModifiers(char key, uint8_t modifiers)
 
     if (modifiers & 0x02) {         // control
         if ((key >= 'a') && (key <= 'z')) {
-            key -= 95;
+            key -= 96;
         }
     }
     else if (modifiers & 0x41) {    // caps lock, shift
