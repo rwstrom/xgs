@@ -38,7 +38,7 @@ struct MemoryPage {
 };
 
 class System {
-    private:
+    private:        
         // Size of a page in bytes
         static constexpr unsigned int kPageSize = 256;
 
@@ -55,8 +55,7 @@ class System {
         // only be accessed via a read or write mapping.
         static constexpr unsigned int kIOPage = kMaxPage + 1;
 
-        bool is_rom03 = false;
-
+        
         unsigned int read_map[kNumPages] = {0};
         unsigned int write_map[kNumPages] = {0};
 
@@ -75,6 +74,8 @@ class System {
         void updateIRQ();
 
     public:
+        const bool is_rom03;
+        
         vbls_t vbl_count = 0;
 
         M65816::Processor *cpu = nullptr;

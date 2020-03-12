@@ -26,9 +26,9 @@ using std::endl;
 using std::uint8_t;
 using std::string;
 
-System::System(const bool rom03)
+System::System(const bool rom03):is_rom03(rom03)
 {
-    is_rom03 = rom03;
+   
 
     for (unsigned int page = 0 ; page < System::kNumPages;  page++) {
         read_map[page] = write_map[page] = page;
