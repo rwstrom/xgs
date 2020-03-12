@@ -77,7 +77,7 @@ then double click on the exe.
 | Runs 64-bit | Yes | Untested | Untested |
 | Runs 32-bit | Untested | Untested | Untested |
 
-Running emulator using 'Apple IIgs Dealer Diagnostics_v3.0.po' on Windows. 
+Running emulator on Windows using 'GS Diagnostics 3.1.2mg' . 
 
 | Test | Result | Notes |
 | ---  | ---    |  ---  |
@@ -85,7 +85,7 @@ Running emulator using 'Apple IIgs Dealer Diagnostics_v3.0.po' on Windows.
 | Speed/Interrupt| Fail | |
 | MMU/IOU | Pass | |
 | Main RAM | Pass | |
-| Expansion RAM | Fail| |
+| Expansion RAM | Pass| |
 | Clock Ram | Fail| |
 | Serial Port internal| Fail| Unimplemented feature |
 | Serial Port crystal | Fail| Unimplemented feature |
@@ -93,17 +93,17 @@ Running emulator using 'Apple IIgs Dealer Diagnostics_v3.0.po' on Windows.
 | Sound speaker tone | Pass | |
 | **Video pattern:** | | |
 | Color bar | Pass | |
-| Character generator| Fail | Prodos pathname error |
+| Character generator| Pass |  |
 | 80/40 column | Pass | |
 | Low resolution graphics| Pass| |
 | High resolution graphics| Pass | |
-| Double High resoulution | Pass | |
+| Double High resoulution | Pass | Seems to have extra lines |
 | Super High Resolution | Pass | |
 | Screen/Text colors | Pass | |
 | **Keyboard/Mouse:**| | |
-| ADB keyboard| Fail | Prodos Error #80 |
-| Standard IIe keyboard | Fail| Prodos Error #80 |
-| Extended IIe keyboard | Fail | Prodos Error #80 |
-| Numeric keypad IIe | Fail | Prodos Error #80 |
+| ADB keyboard| Fail | Unable to press clear key on keypad  |
+| Standard IIe keyboard | Pass|  |
+| Extended IIe keyboard | Fail | Unable to press clear key on keypad|
+| Numeric keypad IIe | Fail |  Unable to press print key|
 | ADB mouse | Pass | |
 | Joystick/Paddle | Pass | Button press only | 
