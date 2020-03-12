@@ -29,8 +29,8 @@ namespace M65816 {
     class Processor;
 }
 
-const unsigned int kRom01Bytes = 131072;
-const unsigned int kRom03Bytes = 262144;
+constexpr unsigned int kRom01Bytes = 128 * 1024; //131072
+constexpr unsigned int kRom03Bytes = 256 * 1024; //262144
 
 const unsigned int kFont40Bytes = 28672;
 const unsigned int kFont80Bytes = 14336;

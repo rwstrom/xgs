@@ -349,7 +349,7 @@ unsigned int Emulator::loadFile(const std::string& filename, const unsigned int 
         p = filename;
     }
 
-    std::uintmax_t bytes = fs::file_size(p);
+    auto bytes = fs::file_size(p);
     std::ifstream ifs;
 
     //*buffer = new uint8_t[bytes];
@@ -369,7 +369,8 @@ unsigned int Emulator::loadFile(const std::string& filename, const unsigned int 
 
 bool Emulator::loadConfig(const int argc, const char **argv)
 {
-    unsigned int ram_size;
+    unsigned int additional_ram = 0;
+    unsigned int ram_size = 0;
     string rom_file;
     string font40_file;
     string font80_file;
@@ -403,10 +404,9 @@ bool Emulator::loadConfig(const int argc, const char **argv)
     po::options_description emulator("Emulator Options");
     emulator.add_options()
         ("trace",    po::bool_switch(&debugger.trace)->default_value(false), "Enable trace")
-        ("rom03,3",  po::bool_switch(&rom03)->default_value(false),          "Enable ROM 03 emulation")
         ("pal",      po::bool_switch(&pal)->default_value(false),            "Enable PAL (50 Hz) mode")
         ("romfile",  po::value<string>(&rom_file)->default_value("xgs.rom"),        "Name of ROM file to load")
-        ("ram",      po::value<unsigned int>(&ram_size)->default_value(1024),       "Set RAM size in KB")
+        ("ram",      po::value<unsigned int>(&additional_ram)->default_value(1024),       "Additional RAM size in KB")
         ("font40",   po::value<string>(&font40_file)->default_value("xgs40.fnt"),   "Name of 40-column font to load")
         ("font80",   po::value<string>(&font80_file)->default_value("xgs80.fnt"),   "Name of 80-column font to load");
 
@@ -455,9 +455,20 @@ bool Emulator::loadConfig(const int argc, const char **argv)
         }
         else {
             po::notify(vm);
-        } 
+        }
+         
+        const auto rom_file_size = fs::file_size(rom_file);
 
+        if(  rom_file_size != kRom01Bytes && rom_file_size != kRom03Bytes) 
+        {
+            std::cerr << "Invalid rom file size: " << rom_file_size << '\n';
+            return false;
+        }
+        rom03 = (rom_file_size == kRom03Bytes);
         rom_pages      = rom03? 1024 : 512;
+        ram_size = rom03 ? 1024 : 128; // amount of built-in fast ram
+        ram_size += additional_ram; // additional ram requested from config/cmdline
+
         rom_start_page = 0x10000 - rom_pages;
         rom = new uint8_t[rom_pages * 256];
 
