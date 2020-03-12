@@ -333,7 +333,7 @@ void Disk525::flushTrack(DiskTrack& track)
 
             uint8_t prev_val = 0; // This never changes,was it meant to always be zero?
 
-            for (i = 0x55 ; i >= 0; --i) {
+            for (i = 0x55 ; i > 0; --i) {
                 val = disk_to_nibble[track.read(pos)];
                 if (val < 0) return;
 
