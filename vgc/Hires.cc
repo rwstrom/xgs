@@ -21,15 +21,15 @@
 static unsigned int line_buffer[280];
 
 // FIXME: pass value from VGC
-static bool vid_a2mono = false;
+//static bool vid_a2mono = false;
 
-void Hires::renderLine(const unsigned int line_number, pixel_t *line)
+void Hires::renderLine(const unsigned int line_number, pixel_t *line, bool mono)
 {
     for (unsigned int col = 0 ; col < 40 ; ++col) {
         const uint8_t val = display_buffer[hires_bases[line_number] + col];
         unsigned int color1, color2;
 
-        if (vid_a2mono) {
+        if (mono) {
             color1 = color2 = 15;
         }
         else {
@@ -66,7 +66,7 @@ void Hires::renderLine(const unsigned int line_number, pixel_t *line)
         b[6] = (val & 0x40)? color1 : 0;
     }
 
-    if (!vid_a2mono) {
+    if (!mono) {
         for (unsigned int i = 0 ; i < 279 ; ++i) {
             if (line_buffer[i] && line_buffer[i + 1]) {
                 line_buffer[i] = line_buffer[i + 1] = 15;

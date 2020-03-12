@@ -6,8 +6,10 @@ install_manifest.txt
 CTestTestfile.cmake
 #ignore local files and settings
 build
+#ignore local settings
 rom_images
 .vs
 .vscode
 CMakeSettings.json
 xgs.conf
+CMakeSettings.json

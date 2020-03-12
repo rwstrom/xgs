@@ -21,7 +21,7 @@ class Lores : public VideoMode {
             display_buffer = buffer;
         }
 
-        void renderLine(const unsigned int, pixel_t *);
+        void renderLine(const unsigned int, pixel_t *, bool mono = false);
 };
 
 #endif // LORES_H_

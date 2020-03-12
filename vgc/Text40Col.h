@@ -34,7 +34,7 @@ class Text40Col : public VideoMode {
 
         void setForeground(pixel_t new_color) { fgcolor = new_color; }
         void setBackground(pixel_t new_color) { bgcolor = new_color; }
-        void renderLine(const unsigned int, pixel_t *);
+        void renderLine(const unsigned int, pixel_t *, bool mono = false);
 };
 
 #endif // TEXT40COL_H_

@@ -30,22 +30,23 @@ static const unsigned int dhr_color_map[4][16] = {
     { 0, 1, 2,  3, 4,  5,  6,  7, 8,  9, 10, 11, 12, 13, 14, 15 }
 };
 
-// FIXME: pass value from VGC
-static bool vid_a2mono = false;
 
-void DblHires::renderLine(const unsigned int line_number, pixel_t *line)
+// FIXME: pass value from VGC
+//static bool vid_a2mono = false;
+
+void DblHires::renderLine(const unsigned int line_number, pixel_t *line, bool mono)
 {
     unsigned int base = hires_bases[line_number];
 
     for (unsigned int col = 0 ; col < 20 ; ++col, base += 2) {
-        uint8_t val = (display_buffer[1][base] & 0x7F)
-                    | ((display_buffer[0][base] & 0x7F) << 7)
-                    | ((display_buffer[1][base + 1] & 0x7F) << 14)
-                    | ((display_buffer[0][base + 1] & 0x7F) << 21);
+        unsigned int val = (display_buffer[0][base] & 0x7F)
+                    | ((display_buffer[1][base] & 0x7F) << 7)
+                    | ((display_buffer[0][base + 1] & 0x7F) << 14)
+                    | ((display_buffer[1][base + 1] & 0x7F) << 21);
 
-		const uint8_t val2 = (col == 19)? 0 : (display_buffer[1][base + 2] << 3);
+		const uint8_t val2 = (col == 19)? 0 : (display_buffer[0][base + 2] << 3);
 
-		if (vid_a2mono) {
+		if (mono) {
 			for (unsigned int i = 0 ; i < 28 ; ++i) {
                 *line++ = val & 1? standard_colors[15] : standard_colors[0];
 				val >>= 1;

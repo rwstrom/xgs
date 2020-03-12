@@ -18,7 +18,7 @@
 #include "emulator/common.h"
 #include "SuperHires.h"
 
-void SuperHires::renderLine(const unsigned int line_number, pixel_t *line)
+void SuperHires::renderLine(const unsigned int line_number, pixel_t *line, bool)
 {
     unsigned int scb = display_buffer[0x7D00 + line_number];
     uint8_t *buffer  = display_buffer + (line_number * 160);

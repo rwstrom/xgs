@@ -22,7 +22,7 @@ class SuperHires : public VideoMode {
         virtual unsigned int getHeight() { return 200; }
 
         void setDisplayBuffer(uint8_t *buffer) { display_buffer = buffer; }
-        void renderLine(const unsigned int, pixel_t *);
+        void renderLine(const unsigned int, pixel_t *, bool mono = false);
 };
 
 #endif // SUPERHIRES_H_
