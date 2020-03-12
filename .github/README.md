@@ -2,7 +2,7 @@
 XGS-rws ![Ubuntu/macOSX Build](https://github.com/rwstrom/xgs/workflows/Ubuntu/macOSX%20Build/badge.svg)
 ===
 
-This is a fork of [XGS ](https://github.com/jmthompson/xgs), a Linux-based Apple IIGS emulator.
+This is a fork of jmthompson's [XGS ](https://github.com/jmthompson/xgs) Apple IIGS emulator project.
 
 
 # About This Version
