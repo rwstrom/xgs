@@ -6,43 +6,7 @@ on:
     - '**/*.md'
 
 jobs:
-  Ubuntu-Build:
-      runs-on: ubuntu-latest
-      
-      steps:
-      - uses: actions/checkout@v2
-      - name: install-deps
-        run: |
-          sudo apt-get -y install libsdl2-dev
-          sudo apt-get -y install libboost-program-options-dev
-      - name: Build
-        run: |
-            mkdir -p build
-            cd build
-            cmake ..
-            make
-      - name: On-Failure
-        if: failure()
-        run: cat build/compile_commands.json
 
-  MacOs-Build:
-      runs-on: macos-latest
-
-      steps:
-      - uses: actions/checkout@v2
-      - name: install-deps
-        run: |
-          brew install sdl2
-          brew install boost
-      - name: Build
-        run: |
-            mkdir -p build 
-            cd build
-            cmake ..
-            make
-      - name: On-Failure
-        if: failure()
-        run: cat build/compile_commands.json
   Windows-Server-2019:
     runs-on: windows-latest
 
@@ -56,7 +20,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DSDL2_DIR= ..
+          cmake -DSDL2_DIR='${{ github.workspace }}/vcpkg' ..
     - name: On-Fail
       if: failure()
       run: type build/compile_commands.json
