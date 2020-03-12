@@ -20,7 +20,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DSDL2_DIR='${{ github.workspace }}/vcpkg' ..
+          cmake -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ..
     - name: On-Fail
       if: failure()
       run: type build/compile_commands.json
