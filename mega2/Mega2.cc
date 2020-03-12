@@ -307,7 +307,7 @@ uint8_t Mega2::read(const unsigned int& offset)
             if (!sw_shadow_hires2) val |= 0x04;
             if (!sw_shadow_super)  val |= 0x08;
             if (!sw_shadow_aux)    val |= 0x10;
-            //if (!sw_shadow_text2)  val |= 0x20;
+            if (!sw_shadow_text2)  val |= 0x20;
             if (!sw_shadow_lc)     val |= 0x40;
 
             break;
@@ -523,7 +523,7 @@ void Mega2::write(const unsigned int& offset, const uint8_t& val)
             sw_shadow_hires2 = !(val & 0x04);
             sw_shadow_super  = !(val & 0x08);
             sw_shadow_aux    = !(val & 0x10);
-            sw_shadow_text2  = !(val & 0x20);
+            sw_shadow_text2  = system->is_rom03 ? !(val & 0x20) : false;
             sw_shadow_lc     = !(val & 0x40);
 
             updateMemoryMaps();
