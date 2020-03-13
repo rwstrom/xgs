@@ -21,13 +21,14 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ..
+          cmake --build .
     - name: On-Fail
       if: failure()
       run: type build/compile_commands.json
       
     - uses: actions/upload-artifact@v1
-      if: endsWith(github.ref, 'xgs-rws')
+      if: endsWith(github.ref, 'github_action')
       with:     
         name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
-        path: build/Debug         
+        path: build/xgs-rws.exe         
         
