@@ -29,5 +29,5 @@ jobs:
       if: endsWith(github.ref, 'github_action')
       with:     
         name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
-        path: build/Debug         
+        path: build/xgs-rws.exe         
         
