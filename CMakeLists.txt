@@ -54,8 +54,14 @@ option(Boost_USE_STATIC_RUNTIME "Use boost static runtime" OFF)
 set(Boost_USE_MULTITHREADED ON)
 
 find_package(Boost 1.60.0 REQUIRED COMPONENTS program_options)
-find_package(SDL2 REQUIRED)
+#find_package(SDL2 REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
+    #target_link_libraries(main PRIVATE SDL2::SDL2 SDL2::SDL2main)
 
+#The package sdl2-ttf:x64-windows provides CMake targets:
+
+    find_package(sdl2-ttf CONFIG REQUIRED)
+    #target_link_libraries(main PRIVATE SDL2::SDL2_ttf)
 include_directories(${PROJECT_SOURCE_DIR} 
                     ${SDL2_INCLUDE_DIRS} 
                     ${Boost_INCLUDE_DIR})
