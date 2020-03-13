@@ -49,10 +49,8 @@ You'll need an Apple IIGS ROM file (either v01 or v03 will work):
 cp PATH_TO_YOUR_ROM_FILE ~/.xgs/xgs.rom
 ```
 
-Now you can start XGS as follows (-3 is only needed if your ROM image is v03):
-
 ```
-./build/xgs -3
+./build/xgs
 ```
 
 You can also display the help text if you need help with the command-line options:
