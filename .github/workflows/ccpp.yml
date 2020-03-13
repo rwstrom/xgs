@@ -21,6 +21,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ..
+          cmake --build .
     - name: On-Fail
       if: failure()
       run: type build/compile_commands.json
