@@ -476,6 +476,10 @@ bool Emulator::loadConfig(const int argc, const char **argv)
 
         slow_ram = new uint8_t[65536*2];
         fast_ram = new uint8_t[ram_size * 1024];
+        //ROM version 3 needs the ram to be zero'd out
+        memset(slow_ram,0,65536*2);
+        memset(fast_ram,0,ram_size * 1024);
+        
         fast_ram_pages = ram_size << 2;
 
         loadFile(font40_file, sizeof(font_40col), font_40col);
