@@ -26,7 +26,7 @@ jobs:
       run: type build/compile_commands.json
       
     - uses: actions/upload-artifact@v1
-      if: endsWith(github.ref, 'xgs-rws')
+      if: endsWith(github.ref, 'github_action')
       with:     
         name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
         path: build/Debug         
