@@ -62,9 +62,8 @@ find_package(SDL2 CONFIG REQUIRED)
 
     find_package(sdl2-ttf CONFIG REQUIRED)
     target_link_libraries(xgs PRIVATE SDL2::SDL2_ttf)
-    find_path(SDL2_INCLUDE_DIRS SDL.h)
-    include_directories(${CATCH_INCLUDE_DIR})
-    
+    get_target_property(SDL2_INCLUDE_DIRS SDL2::SDL2 INTERFACE_INCLUDE_DIRECTORIES)
+
 include_directories(${PROJECT_SOURCE_DIR} 
                     ${SDL2_INCLUDE_DIRS} 
                     ${Boost_INCLUDE_DIR})
