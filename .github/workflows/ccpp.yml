@@ -20,6 +20,7 @@ jobs:
             ${{ runner.os }}-vcpkg-download-${{ matrix.os }}-
             ${{ runner.os }}-vcpkg-download- 
     - name: install-deps
+      if: steps.cache.outputs.cache-hit != 'true'
       run: |
           vcpkg install sdl2:x64-windows sdl2-ttf:x64-windows
           vcpkg integrate install
@@ -31,7 +32,7 @@ jobs:
           cmake --config Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DBoost_USE_STATIC_LIBS=ON -DUSING_VCPKG_SDL=ON ..
           cmake --build . --config Release
           cp Release/xgs.exe ../fonts/xgs-rws.exe
-          cp Release/SDL.dll ../fonts/
+          cp Release/*.dll ../fonts/
     - name: On-Fail
       if: failure()
       run: type build/compile_commands.json
