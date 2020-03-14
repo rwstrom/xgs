@@ -6,7 +6,57 @@ on:
     - '**/*.md'
 
 jobs:
+  Ubuntu-Build:
+      runs-on: ubuntu-latest
+      
+      steps:
+      - uses: actions/checkout@v2
+      - name: install-deps
+        run: |
+          sudo apt-get -y install libsdl2-dev
+          sudo apt-get -y install libboost-program-options-dev
+      - name: Build
+        run: |
+            mkdir -p build
+            cd build
+            cmake --config Release ..
+            cmake --build . --config Release
+            cp xgs ../fonts/xgs-rws
+      - name: On-Failure
+        if: failure()
+        run: cat build/compile_commands.json
+      
+      - uses: actions/upload-artifact@v1
+        if: endsWith(github.ref, 'github_action')
+        with:     
+          name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
+          path: fonts 
 
+  MacOs-Build:
+      runs-on: macos-latest
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: install-deps
+        run: |
+          brew install sdl2
+          brew install boost
+      - name: Build
+        run: |
+            mkdir -p build 
+            cd build
+            cmake --config Release ..
+            cmake --build . --config Release
+            cp xgs ../fonts/xgs-rws
+      - name: On-Failure
+        if: failure()
+        run: cat build/compile_commands.json
+      
+      - uses: actions/upload-artifact@v1
+        if: endsWith(github.ref, 'github_action')
+        with:     
+          name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
+          path: fonts 
   Windows-Server-2019:
     runs-on: windows-latest
 
