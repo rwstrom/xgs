@@ -14,7 +14,7 @@ Changes have been made so it compiles on windows, linux, and macOSX 10.15.
 ROM versions 1 at 3 are supported.
 
 The ROM is considered Apple copyrighted material and is not supplied here.
-You can create your own or search the internet. [Here's one place you can look.](ftp://public.asimov.net/pub/apple_II/emulators/rom_images/)
+You can create your own or search the internet. Here's one place you can try looking: ftp://public.asimov.net/pub/apple_II/emulators/rom_images/
 
 # Binaries
 
