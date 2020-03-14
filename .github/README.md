@@ -29,6 +29,9 @@ The artifacts section should contain zips for each platform.
 After unzipping drop a copy of your rom file into the folder and click on the executable.
 
 Note: linux/macos platforms will need sdl2 and boost installed.
+Note: The default ROM file name is xgs.rom
+
+Run xgs-rws --help for a list of options.
 
 # Compiling
 
@@ -78,7 +81,7 @@ cp PATH_TO_YOUR_ROM_FILE ~/.xgs/xgs.rom
 You can also display the help text if you need help with the command-line options:
 
 ```
-./build/xgs --help
+./build/xgs-rws --help
 ```
 **On Windows:**
 
