@@ -28,8 +28,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DBoost_USE_STATIC_LIBS=ON --config Release ..
-          cmake --config Release --build .
+          cmake --config Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DBoost_USE_STATIC_LIBS=ON ..
+          cmake --build . --config Release
     - name: On-Fail
       if: failure()
       run: type build/compile_commands.json
