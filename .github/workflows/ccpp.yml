@@ -19,11 +19,18 @@ jobs:
         run: |
             mkdir -p build
             cd build
-            cmake ..
-            make
+            cmake --config Release ..
+            cmake --build . --config Release
+            cp xgs ../fonts/xgs-rws
       - name: On-Failure
         if: failure()
         run: cat build/compile_commands.json
+      
+      - uses: actions/upload-artifact@v1
+        if: endsWith(github.ref, 'github_actions')
+        with:     
+          name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
+          path: fonts 
 
   MacOs-Build:
       runs-on: macos-latest
@@ -38,25 +45,53 @@ jobs:
         run: |
             mkdir -p build 
             cd build
-            cmake ..
-            make
+            cmake --config Release ..
+            cmake --build . --config Release
+            cp xgs ../fonts/xgs-rws
       - name: On-Failure
         if: failure()
         run: cat build/compile_commands.json
-#  Windows-Server-2019:
-#    runs-on: windows-latest
-#
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: install-deps
-#      run: vcpkg install sdl2 sdl2-ttf
-#    - name: build
-#      run: |
-#          mkdir build
-#          cd build
-#          cmake ..
-#    - name: On-Fail
-#      if: failure()
-#      run: type build/compile_commands.json
       
+      - uses: actions/upload-artifact@v1
+        if: endsWith(github.ref, 'github_actions')
+        with:     
+          name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
+          path: fonts 
+  Windows-Server-2019:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v1
+      id: cache
+      with:
+          path: ~\vcpkg\
+          key: ${{ runner.os }}-vcpkg-download-${{ matrix.os }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-download-${{ matrix.os }}-
+            ${{ runner.os }}-vcpkg-download-
+            ${{ runner.os }}-
+    - name: install-deps
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+          vcpkg install sdl2:x64-windows sdl2-ttf:x64-windows
+          vcpkg integrate install
+    
+    - name: build
+      run: |
+          mkdir build
+          cd build
+          cmake --config Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DBoost_USE_STATIC_LIBS=ON -DUSING_VCPKG_SDL=ON ..
+          cmake --build . --config Release
+          cp Release/xgs.exe ../fonts/xgs-rws.exe
+          cp Release/*.dll ../fonts/
+    - name: On-Fail
+      if: failure()
+      run: type build/compile_commands.json
+      
+    - uses: actions/upload-artifact@v1
+      if: endsWith(github.ref, 'github_action')
+      with:     
+        name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
+        path: fonts        
         
