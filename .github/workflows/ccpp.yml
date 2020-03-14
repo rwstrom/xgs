@@ -19,7 +19,8 @@ jobs:
           key: ${{ runner.os }}-vcpkg-download-${{ matrix.os }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-vcpkg-download-${{ matrix.os }}-
-            ${{ runner.os }}-vcpkg-download- 
+            ${{ runner.os }}-vcpkg-download-
+            ${{ runner.os }}-
     - name: install-deps
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
