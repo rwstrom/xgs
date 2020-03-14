@@ -350,19 +350,21 @@ unsigned int Emulator::loadFile(const std::string& filename, const unsigned int 
     }
 
     auto bytes = fs::file_size(p);
-    std::ifstream ifs;
+    
+    if (bytes != expected_size) {
+        string err = (boost::format("Error loading %s: expected %d bytes, but read %d\n") % filename % expected_size % bytes).str();
 
-    //*buffer = new uint8_t[bytes];
+        throw std::runtime_error(err);
+        return 0;
+    }
+    
+    std::ifstream ifs;
 
     ifs.open(p, std::ifstream::binary);
     ifs.read((char *) buffer, bytes);
     ifs.close();
 
-    if (bytes != expected_size) {
-        string err = (boost::format("Error loading %s: expected %d bytes, but read %d\n") % filename % expected_size % bytes).str();
-
-        throw std::runtime_error(err);
-    }
+    
 
     return bytes;
 }
@@ -406,7 +408,7 @@ bool Emulator::loadConfig(const int argc, const char **argv)
         ("trace",    po::bool_switch(&debugger.trace)->default_value(false), "Enable trace")
         ("pal",      po::bool_switch(&pal)->default_value(false),            "Enable PAL (50 Hz) mode")
         ("romfile",  po::value<string>(&rom_file)->default_value("xgs.rom"),        "Name of ROM file to load")
-        ("ram",      po::value<unsigned int>(&additional_ram)->default_value(1024),       "Additional RAM size in KB")
+        ("ram",      po::value<unsigned int>(&additional_ram)->default_value(0),       "Additional RAM size in KB")
         ("font40",   po::value<string>(&font40_file)->default_value("xgs40.fnt"),   "Name of 40-column font to load")
         ("font80",   po::value<string>(&font80_file)->default_value("xgs80.fnt"),   "Name of 80-column font to load");
 
@@ -453,9 +455,9 @@ bool Emulator::loadConfig(const int argc, const char **argv)
 
             return false;
         }
-        else {
-            po::notify(vm);
-        }
+        
+        po::notify(vm);
+        
          
         const auto rom_file_size = fs::file_size(rom_file);
 
