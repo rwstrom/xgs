@@ -19,7 +19,7 @@ jobs:
           vcpkg integrate install
     - uses: actions/cache@v1
       with:
-          path: C:\vcpkg\downloads
+          path: ~\vcpkg\downloads
           key: ${{ runner.os }}-vcpkg-download-${{ matrix.os }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-vcpkg-download-${{ matrix.os }}-
