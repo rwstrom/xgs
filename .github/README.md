@@ -1,5 +1,5 @@
 
-XGS-rws ![Ubuntu/macOSX Build](https://github.com/rwstrom/xgs/workflows/Ubuntu/macOSX%20Build/badge.svg)
+XGS-rws ![Build](https://github.com/rwstrom/xgs/workflows/Build/badge.svg)
 ===
 
 This is a fork of jmthompson's [XGS ](https://github.com/jmthompson/xgs) Apple IIGS emulator project.
@@ -9,6 +9,27 @@ This is a fork of jmthompson's [XGS ](https://github.com/jmthompson/xgs) Apple I
 
 Changes have been made so it compiles on windows, linux, and macOSX 10.15.
 
+# ROMS
+
+ROM versions 1 at 3 are supported.
+
+The ROM is considered Apple copyrighted material and is not supplied here.
+You can create your own or search the internet. [Here's one place you can look.](ftp://public.asimov.net/pub/apple_II/emulators/rom_images/)
+
+# Binaries
+Github Actions produces linux/macos/windows binaries when changes are made to the XGS-rws branch. 
+These are for testing purposes only. 
+
+Click on the [Actions](https://github.com/rwstrom/xgs/actions?query=branch%3AXGS-rws) tab above. 
+
+From the 'Actions' page click on one of the workflows created by XGS-rws branch.
+
+The artifacts section should contain zips for each platform.
+
+After unzipping drop a copy of your rom file into the folder and click on the executable.
+
+Note: linux/macos platforms will need sdl2 and boost installed.
+
 # Compiling
 
 To compile this code you will need
@@ -16,7 +37,7 @@ To compile this code you will need
 - CMake
 - c++17 capable compiler
 - The Boost format and program_options libraries
-- SDL2
+- SDL2 
 - SDL2_ttf
 
 To build XGS, from the source directory run:
@@ -25,11 +46,12 @@ To build XGS, from the source directory run:
 mkdir build
 cd build
 cmake ..
-make 
+cmake --build . 
 ```
-
-The binary will be compiled to build/xgs.
-
+On linux/macos:
+    The binary will be compiled to build/xgs.
+On windows:
+    The binary will be in build/Debug or build/Release
 # Usage
 **On mac/linux:**
 
