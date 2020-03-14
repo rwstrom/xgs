@@ -17,21 +17,22 @@ The ROM is considered Apple copyrighted material and is not supplied here.
 You can create your own or search the internet. [Here's one place you can look.](ftp://public.asimov.net/pub/apple_II/emulators/rom_images/)
 
 # Binaries
+
+There are currently no released binaries. However
 Github Actions produces linux/macos/windows binaries when changes are made to the XGS-rws branch. 
 These are for testing purposes only. 
 
-Click on the [Actions](https://github.com/rwstrom/xgs/actions?query=branch%3AXGS-rws) tab above. 
-
-From the 'Actions' page click on one of the workflows created by XGS-rws branch.
-
-The artifacts section should contain zips for each platform.
-
-After unzipping drop a copy of your rom file into the folder and click on the executable.
+- Click on the [Actions](https://github.com/rwstrom/xgs/actions?query=branch%3AXGS-rws) tab above. 
+- From the 'Actions' page click on one of the workflows created by XGS-rws branch.
+- The artifacts section should contain zips for each platform.
+- After unzipping drop a copy of your rom file into the folder.
+- Click on the executable.
 
 Note: linux/macos platforms will need sdl2 and boost installed.
+
 Note: The default ROM file name is xgs.rom
 
-Run xgs-rws --help for a list of options.
+Run xgs-rws --help from the commandline for a list of options.
 
 # Compiling
 
