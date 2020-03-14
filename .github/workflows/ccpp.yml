@@ -12,10 +12,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+     
     - name: install-deps
       run: |
           vcpkg install sdl2:x64-windows sdl2-ttf:x64-windows
           vcpkg integrate install
+    - uses: actions/cache@v1
+      with:
+          path: C:\vcpkg\downloads
+          key: ${{ runner.os }}-vcpkg-download-${{ matrix.os }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-download-${{ matrix.os }}-
+            ${{ runner.os }}-vcpkg-download-
     - name: build
       run: |
           mkdir build
