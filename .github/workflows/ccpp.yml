@@ -27,7 +27,7 @@ jobs:
         run: cat build/compile_commands.json
       
       - uses: actions/upload-artifact@v1
-        if: endsWith(github.ref, 'github_actions')
+        if: endsWith(github.ref, 'XGS-rws')
         with:     
           name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
           path: fonts 
@@ -53,7 +53,7 @@ jobs:
         run: cat build/compile_commands.json
       
       - uses: actions/upload-artifact@v1
-        if: endsWith(github.ref, 'github_actions')
+        if: endsWith(github.ref, 'XGS-rws')
         with:     
           name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
           path: fonts 
@@ -90,7 +90,7 @@ jobs:
       run: type build/compile_commands.json
       
     - uses: actions/upload-artifact@v1
-      if: endsWith(github.ref, 'github_action')
+      if: endsWith(github.ref, 'XGS-rws')
       with:     
         name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
         path: fonts        
