@@ -30,6 +30,7 @@ jobs:
           cd build
           cmake --config Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DBoost_USE_STATIC_LIBS=ON -DUSING_VCPKG_SDL=ON ..
           cmake --build . --config Release
+          cp Release/xgs.exe ../fonts/xgs-rws.exe
     - name: On-Fail
       if: failure()
       run: type build/compile_commands.json
@@ -38,5 +39,5 @@ jobs:
       if: endsWith(github.ref, 'github_action')
       with:     
         name: xgs-rws-${{runner.os}}-x64-${{ github.run_id}}
-        path: build/Release/xgs.exe         
+        path: build/Release         
         
