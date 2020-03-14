@@ -461,8 +461,8 @@ bool Emulator::loadConfig(const int argc, const char **argv)
 
         if(  rom_file_size != kRom01Bytes && rom_file_size != kRom03Bytes) 
         {
-            std::cerr << "Invalid rom file size: " << rom_file_size << '\n';
-            return false;
+            std::cerr << "Invalid ROM file size: " << rom_file_size << '\n';
+            throw std::runtime_error("Invalid ROM file size");
         }
         rom03 = (rom_file_size == kRom03Bytes);
         rom_pages      = rom03? 1024 : 512;
@@ -487,7 +487,10 @@ bool Emulator::loadConfig(const int argc, const char **argv)
     }
     catch (std::exception& e) { 
         cerr << "ERROR: " << e.what() << endl << endl;
-
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+                         "Startup Error",
+                         e.what(),
+                         NULL);
         return false;
     } 
 
