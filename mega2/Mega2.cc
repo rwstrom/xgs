@@ -645,7 +645,7 @@ void Mega2::tick(const unsigned int frame_number)
 
 void Mega2::microtick(const unsigned int line_number)
 {
-    if (line_number == 192) {
+    if (line_number >= 192) {
         in_vbl = true;
 
         if (sw_vblirq_enable && !(sw_diagtype & 0x08)) {
