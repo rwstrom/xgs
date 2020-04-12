@@ -290,7 +290,12 @@ uint8_t Mega2::read(const unsigned int& offset)
             break;
 
         case 0x19:
-            val = in_vbl? 0x80 : 0x00;
+            //TODO: Conflicting documentation, investigate further.
+            //older apple used 0 to indictate vbl,
+            // the gs is suppose to use 1 to indicate vbl.
+            // On Arkanoid there is tearing when using 1 as vbl.
+            //so which is it?
+            val = in_vbl? 0x00 : 0x80;
             break;
 
         case 0x2D:
@@ -648,7 +653,7 @@ void Mega2::microtick(const unsigned int line_number)
     if (line_number >= 192) {
         in_vbl = true;
 
-        if (sw_vblirq_enable && !(sw_diagtype & 0x08)) {
+        if (line_number == 192 && sw_vblirq_enable && !(sw_diagtype & 0x08)) {
             sw_diagtype |= 0x08;
 
             system->raiseInterrupt(MEGA2_IRQ);
