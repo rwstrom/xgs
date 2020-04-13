@@ -38,8 +38,9 @@ class ADB : public Device {
         bool sw_m2mousemvirq;
         bool sw_m2mouseswirq;
 
-        unsigned int paddle0, paddle1;
-        cycles_t paddle0_time, paddle1_time;
+        cycles_t paddle0_time = UINT64_MAX, paddle1_time = UINT64_MAX;
+        uint8_t paddle0_position = 0;
+        uint8_t paddle1_position = 0;
 
         uint8_t ski_kbd_reg;
         uint8_t ski_modifier_reg = 0;
@@ -68,6 +69,7 @@ class ADB : public Device {
         unsigned int ski_read,ski_written;
 
         SKICommand current;
+        SDL_Joystick* jstick = nullptr;
 
         std::vector<unsigned int>& ioReadList()
         {
@@ -109,6 +111,7 @@ class ADB : public Device {
 
         void handleKeyDown(SDL_KeyboardEvent *);
         void handleKeyUp(SDL_KeyboardEvent *);
+        void handleJoystickDevice(SDL_JoyDeviceEvent*);
         void handleJoyButton(SDL_JoyButtonEvent *);
         void handleJoyMotion(SDL_JoyAxisEvent *);
         void handleMouseBtnDown(SDL_MouseButtonEvent *);

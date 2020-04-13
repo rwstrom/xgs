@@ -395,10 +395,7 @@ uint8_t ADB::readPaddle0()
     if (system->cpu->total_cycles < paddle0_time) {
         return 0x80;
     }
-    else {
-        return 0x00;
-    }
-    return 0x80;
+    return 0x00;
 }
 
 uint8_t ADB::readPaddle1()
@@ -586,8 +583,8 @@ void ADB::setStatus(uint8_t val)
 
 void ADB::triggerPaddles()
 {
-    paddle0_time = system->cpu->total_cycles + (paddle0 * 11);
-    paddle1_time = system->cpu->total_cycles + (paddle1 * 11);
+    paddle0_time = system->cpu->total_cycles + (paddle0_position * 11);
+    paddle1_time = system->cpu->total_cycles + (paddle1_position * 11);
 }
 
 void ADB::handleKeyDown(SDL_KeyboardEvent *event)
@@ -725,47 +722,67 @@ void ADB::handleKeyUp(SDL_KeyboardEvent *event)
     }
 }
 
+void ADB::handleJoystickDevice(SDL_JoyDeviceEvent* event)
+{
+    if(event->type == SDL_JOYDEVICEADDED)
+    {
+        std::cout << "joystick added" << std::endl;
+        if(!jstick)
+        {
+            jstick = SDL_JoystickOpen(0);
+        }
+    }else if(event->type == SDL_JOYDEVICEREMOVED)
+    {
+        if(jstick)
+        {
+            if(event->which == 0)
+            {
+                jstick = nullptr;
+            }
+        }
+        std::cout << "joystick removed" << std::endl;
+    }
+
+}
+
 void ADB::handleJoyButton(SDL_JoyButtonEvent *event)
 {
-#if 0
-            // down, up
-             if (adb_grab_mode == 1) {        /* Joystick */
-                 switch(event.xbutton.button) {
-                    case Button1 :    ski_modifier_reg |= 0x80;
-                             break;
-                    case Button3 :    ski_modifier_reg |= 0x40;
-                             break;
-                    default :    break;
-                 }
 
-                 switch(event.xbutton.button) {
-                    case Button1 :    ski_modifier_reg &= ~0x80;
-                             break;
-                    case Button3 :    ski_modifier_reg &= ~0x40;
-                             break;
-                    default :    break;
-                 }
-#endif
+    if(event->button == 0)
+    {
+        if(event->state == SDL_PRESSED)
+            ski_modifier_reg |= 0x80;
+        else
+        {
+            ski_modifier_reg &= ~0x80;
+        }
+        
+    }
+    else if(event->button == 1)
+    {
+        if(event->state == SDL_PRESSED)
+            ski_modifier_reg |= 0x40;
+        else
+        {
+            ski_modifier_reg &= ~0x40;
+        }
+    }
+
 }
 
 void ADB::handleJoyMotion(SDL_JoyAxisEvent *event)
 {
-#if 0
-                 adb_pdl0 = (int) (event.xmotion.x / 2.2);
-                 adb_pdl1 = (int) (event.xmotion.y / 1.5);
-                if (adb_pdl0 > 255) adb_pdl0 = 255;
-                if (adb_pdl1 > 255) adb_pdl1 = 255;
-                 if (event.xmotion.state & Button1Mask) {
-                     ski_modifier_reg |= 0x80;
-                 } else {
-                     ski_modifier_reg &= ~0x80;
-                 }
-                 if (event.xmotion.state & Button3Mask) {
-                     ski_modifier_reg |= 0x40;
-                 } else {
-                     ski_modifier_reg &= ~0x40;
-                 }
-#endif
+    if(event->axis == 0)
+    {    
+        paddle0_position = ((event->value / 256) + 127)+1;
+        //std::cout << "x val: " << event->value << " resist: " << (int)paddle0_resistence << std::endl;
+    }
+    else
+    {
+        paddle1_position = ((event->value / 256) + 127)+1;
+        //std::cout << "y val: " << event->value << " resist: " << (int)paddle1_resistence << std::endl;
+    }
+
 }
 
 void ADB::handleMouseBtnDown(SDL_MouseButtonEvent *event)
@@ -852,6 +869,10 @@ bool ADB::processEvent(SDL_Event& event)
         case SDL_KEYUP:
             handleKeyUp(&event.key);
 
+            return true;
+        case SDL_JOYDEVICEADDED:
+        case SDL_JOYDEVICEREMOVED:
+            handleJoystickDevice(&event.jdevice);
             return true;
         case SDL_JOYBUTTONDOWN:
         case SDL_JOYBUTTONUP:
