@@ -772,15 +772,16 @@ void ADB::handleJoyButton(SDL_JoyButtonEvent *event)
 
 void ADB::handleJoyMotion(SDL_JoyAxisEvent *event)
 {
+
     if(event->axis == 0)
     {    
         paddle0_position = ((event->value / 256) + 127)+1;
-        //std::cout << "x val: " << event->value << " resist: " << (int)paddle0_resistence << std::endl;
+        //std::cout << "x val: " << event->value << " position: " << (int)paddle0_position << std::endl;
     }
-    else
+    else if(event->axis == 1)
     {
         paddle1_position = ((event->value / 256) + 127)+1;
-        //std::cout << "y val: " << event->value << " resist: " << (int)paddle1_resistence << std::endl;
+        //std::cout << "y val: " << event->value << " position: " << (int)paddle1_position << std::endl;
     }
 
 }
