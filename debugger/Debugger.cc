@@ -9,12 +9,11 @@
 
 #include <iostream>
 #include <iomanip>
-#include <sstream>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include <boost/format.hpp>
+#include <fmt/format.h>
 
 #include "M65816/Processor.h"
 #include "Debugger.h"
@@ -26,7 +25,7 @@ using std::endl;
 using std::int8_t;
 using std::int16_t;
 using std::string;
-using boost::format;
+using fmt::format;
 
 using M65816::mem_access_t;
 
@@ -66,7 +65,7 @@ void Debugger::handleInstructionRead(const uint8_t bank, const uint16_t address,
     }
     else {
         if (cpu_instr.bytes.size()) {
-            cout << format("%02X/%04X:%-12s  %3s  %-18s |%c%c%c%c%c%c%c%c| E=%1d DBR=%02X A=%04X X=%04X Y=%04X S=%04X D=%04X\n")
+            /*cout << format("%02X/%04X:%-12s  %3s  %-18s |%c%c%c%c%c%c%c%c| E=%1d DBR=%02X A=%04X X=%04X Y=%04X S=%04X D=%04X\n")
                             % (int) cpu_instr.pbr
                             % cpu_instr.pc
                             % renderBytes()
@@ -87,6 +86,30 @@ void Debugger::handleInstructionRead(const uint8_t bank, const uint16_t address,
                             % system->cpu->Y.W
                             % system->cpu->S.W
                             % system->cpu->D;
+
+            */
+             fmt::print("{:02X}/{:04X}:{:<12}  {}  {:<18} |{}{}{}{}{}{}{}{}| E={} DBR={:02X} A={:04X} X={:04X} Y={:04X} S={:04X} D={:04X}\n"
+                            , (int) cpu_instr.pbr
+                            , cpu_instr.pc
+                            , renderBytes()
+                            , opcodes[cpu_instr.bytes[0]].mnemonic
+                            , renderArgument()
+                            , (system->cpu->SR.N? 'n' : '-')
+                            , (system->cpu->SR.V? 'v' : '-')
+                            , (system->cpu->SR.M? 'm' : '-')
+                            , (system->cpu->SR.X? 'x' : '-')
+                            , (system->cpu->SR.D? 'd' : '-')
+                            , (system->cpu->SR.I? 'i' : '-')
+                            , (system->cpu->SR.Z? 'z' : '-')
+                            , (system->cpu->SR.C? 'c' : '-')
+                            , (int) system->cpu->SR.E
+                            , (int) system->cpu->DBR
+                            , system->cpu->A.W
+                            , system->cpu->X.W
+                            , system->cpu->Y.W
+                            , system->cpu->S.W
+                            , system->cpu->D
+             );
         }
 
         cpu_instr.bytes.clear();
@@ -133,30 +156,29 @@ void Debugger::handleVectorRead(const uint8_t bank, const uint16_t address, cons
 
 std::string Debugger::renderArgument()
 {
-    std::stringstream buffer;
-    //int i;
+    std::string buffer;
 
     switch (opcodes[cpu_instr.bytes[0]].mode) {
         case kAddrMode_immediate:
 
-            buffer << "#$";
+            buffer = "#$";
 
             for (auto i = cpu_instr.bytes.size() - 1 ; i > 0 ; i--) {
-                buffer << format("%02X") % cpu_instr.bytes[i];
+                buffer += fmt::format("{:02X}", cpu_instr.bytes[i]);
             }
 
             break;
 
         case kAddrMode_a:
-            buffer << format("$%02X%02X") % cpu_instr.bytes[2] % cpu_instr.bytes[1];
+            buffer = fmt::format("${:02X}{:02X}", cpu_instr.bytes[2], cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_al:
-            buffer << format("$%02X%02X%02X") % cpu_instr.bytes[3] % cpu_instr.bytes[2] % cpu_instr.bytes[1];
+            buffer = fmt::format("${:02X}{:02X}{:02X}", cpu_instr.bytes[3] , cpu_instr.bytes[2] , cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_d:
-            buffer << format("$%02X") % cpu_instr.bytes[1];
+            buffer = fmt::format("${:02X}" , cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_accumulator:
@@ -165,35 +187,35 @@ std::string Debugger::renderArgument()
             break;
 
         case kAddrMode_dix:
-            buffer << format("($%02X),Y") % cpu_instr.bytes[1];
+            buffer = fmt::format("(${:02X}),Y", cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_dixl:
-            buffer << format("[$%02X],Y") % cpu_instr.bytes[1];
+            buffer = format("[${:02X}],Y", cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_dxi:
-            buffer << format("($%02X),X") % cpu_instr.bytes[1];
+            buffer = format("(${:02X}),X", cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_dxx:
-            buffer << format("$%02X,X") % cpu_instr.bytes[1];
+            buffer = format("${:02X},X", cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_dxy:
-            buffer << format("$%02X,Y") % cpu_instr.bytes[1];
+            buffer = format("${:02X},Y", cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_axx:
-            buffer << format("$%02X%02X,X") % cpu_instr.bytes[2] % cpu_instr.bytes[1];
+            buffer = format("${:02X}{:02X},X", cpu_instr.bytes[2], cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_alxx:
-            buffer << format("$%02X%02X%02X,X") % cpu_instr.bytes[3] % cpu_instr.bytes[2] % cpu_instr.bytes[1];
+            buffer = format("${:02X}{:02X}{:02X},X", cpu_instr.bytes[3], cpu_instr.bytes[2], cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_axy:
-            buffer << format("$%02X%02X,Y") % cpu_instr.bytes[2] % cpu_instr.bytes[1];
+            buffer = format("${:02X}{:02X},Y", cpu_instr.bytes[2], cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_pcr:
@@ -201,59 +223,59 @@ std::string Debugger::renderArgument()
                 int8_t offset = cpu_instr.bytes[1];
                 uint16_t dst  = cpu_instr.pc + 2 + offset;
 
-                buffer << format("$%04X") % dst;
+                buffer = format("${:04X}", dst);
             }
             break;
 
         case kAddrMode_pcrl:
             {
-                int16_t offset = (cpu_instr.bytes[2] << 8) | cpu_instr.bytes[1];
+                int16_t offset = (cpu_instr.bytes[2] = 8) | cpu_instr.bytes[1];
                 uint16_t dst   = cpu_instr.pc + 3 + offset;
 
-                buffer << format("$%04X") % dst;
+                buffer = format("${:04X}", dst);
             }
             break;
 
         case kAddrMode_ai:
         case kAddrMode_ail:
-            buffer << format("($%02X%02X)") % cpu_instr.bytes[2] % cpu_instr.bytes[1];
+            buffer = format("(${:02X}{:02X})", cpu_instr.bytes[2] , cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_di:
-            buffer << format("($%02X)") % cpu_instr.bytes[1];
+            buffer = format("(${:02X})", cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_dil:
-            buffer << format("[$%02X]") % cpu_instr.bytes[1];
+            buffer = format("[${:02X}]", cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_axi:
-            buffer << format("($%02X%02X,X)") % cpu_instr.bytes[2] % cpu_instr.bytes[1];
+            buffer = format("(${:02X}{:02X},X)", cpu_instr.bytes[2], cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_sr:
-            buffer << format("$%02X,S") % cpu_instr.bytes[1];
+            buffer = format("${:02X},S", cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_srix:
-            buffer << format("($%02X,S),Y") % cpu_instr.bytes[1];
+            buffer = format("(${:02X},S),Y", cpu_instr.bytes[1]);
             break;
 
         case kAddrMode_blockmove:
-            buffer << format("$%02X,$%02X") % cpu_instr.bytes[1] % cpu_instr.bytes[2];
+            buffer = format("${:02X},${:02X}", cpu_instr.bytes[1], cpu_instr.bytes[2]);
             break;
     }
 
-    return buffer.str();
+    return buffer;
 }
 
 std::string Debugger::renderBytes()
 {
-    std::stringstream buffer;
+    std::string buffer;
 
     for (const int &b : cpu_instr.bytes) {
-        buffer << format(" %02X") % b;
+        buffer += format(" {:02X}", b);
     }
 
-    return buffer.str();
+    return buffer;
 }

@@ -137,7 +137,7 @@ void VirtualDisk::openTwoImgFile()
 #endif
 
     if (header.magic != kTwoImgMagic) {
-        std::cerr << boost::format("got magic %08X, expected %08X\n") % header.magic % kTwoImgMagic;
+        std::cerr << fmt::format("got magic {:08X}, expected {:08X}\n" , header.magic , kTwoImgMagic);
 
         throw std::runtime_error("Invalid magic number in 2IMG header");
     }

@@ -2,7 +2,6 @@
 #define SYSTEM_H_
 
 #include <map>
-#include <boost/format.hpp>
 
 #include "emulator/common.h"
 

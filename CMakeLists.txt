@@ -70,6 +70,11 @@ include_directories(${PROJECT_SOURCE_DIR}
                     ${SDL2_INCLUDE_DIRS} 
                     ${Boost_INCLUDE_DIR})
 
+add_subdirectory(imgui)
+add_subdirectory(third_party/galogen)
+add_subdirectory(third_party/fmt)
+include_directories(${FMT_SOURCE_DIR}/include)
+
 add_subdirectory(adb)
 add_subdirectory(debugger)
 add_subdirectory(disks)
@@ -79,8 +84,7 @@ add_subdirectory(M65816)
 add_subdirectory(mega2)
 add_subdirectory(vgc)
 
-add_subdirectory(third_party/galogen)
-add_subdirectory(imgui)
+
 
 target_link_libraries(xgs   emulator #gcc needs this to be first
                             adb
@@ -91,7 +95,8 @@ target_link_libraries(xgs   emulator #gcc needs this to be first
                             mega2 
                             vgc 
                             imgui 
-                            gl_extension_loader 
+                            gl_extension_loader
+                            fmt 
                             ${Boost_LIBRARIES} 
                             ${SDL2_LIBRARIES})
 

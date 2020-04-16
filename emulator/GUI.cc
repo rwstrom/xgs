@@ -16,7 +16,7 @@
 #include "disks/IWM.h"
 
 using std::string;
-using boost::format;
+
 namespace GUI {
 
 // Data
@@ -360,8 +360,8 @@ void drawStatusBar(Emulator& emulator)
     Video *video = emulator.getVideo();
 
     const unsigned int bar_height = 34;
-    string speed = (format("%0.1f MHz") % emulator.getSpeed()).str();
-    string version = (format("XGS v%0d.%0d") % kVersionMajor % kVersionMinor).str();
+    string speed = fmt::format("{:0.1f} MHz" , emulator.getSpeed());
+    string version = fmt::format("XGS v{}.{}", kVersionMajor , kVersionMinor);
     bool s5d1 = false;
     bool s5d2 = false;
     bool s6d1 = false;

@@ -17,7 +17,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <boost/format.hpp>
+
 #include "System.h"
 #include "M65816/Processor.h"
 
@@ -185,7 +185,7 @@ void System::raiseInterrupt(irq_source_t source)
 {
     irq_states[source] = true;
 
-//    cerr << boost::format("raiseInterrupt(%d)\n") % source;
+//    cerr << fmt::format("raiseInterrupt({})\n", source);
 
     updateIRQ();
 }
@@ -194,7 +194,7 @@ void System::lowerInterrupt(irq_source_t source)
 {
     irq_states[source] = false;
 
-//    cerr << boost::format("lowerInterrupt(%d)\n") % source;
+//    cerr << fmt::format("lowerInterrupt({})\n", source);
 
     updateIRQ();
 }

@@ -7,7 +7,7 @@
  * Commercial use is prohibited without my written permission
  */
 
-#include <boost/format.hpp>
+#include <fmt/format.h>
 
 #include "Processor.h"
 #include "cycle_counts.h"
