@@ -70,7 +70,7 @@ include_directories(${PROJECT_SOURCE_DIR}
                     ${SDL2_INCLUDE_DIRS} 
                     ${Boost_INCLUDE_DIR})
 
-add_subdirectory(imgui)
+add_subdirectory(third_party/imgui)
 add_subdirectory(third_party/galogen)
 add_subdirectory(third_party/fmt)
 include_directories(${FMT_SOURCE_DIR}/include)
