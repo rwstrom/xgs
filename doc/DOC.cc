@@ -14,7 +14,7 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <boost/format.hpp>
+#include <fmt/format.h>
 
 #include <SDL.h>
 
@@ -265,8 +265,8 @@ void DOC::setOutputDevice(const char *device)
         throw e;
     }
 
-    cerr << boost::format("Audio device buffer is %d bytes (%d samples)\n") % actual.size % (actual.size / sizeof(AudioSample));
-    cerr << boost::format("Internal sample buffer is %d bytes (%d samples)\n") % buffer_len % buffer_max;
+    cerr << fmt::format("Audio device buffer is {} bytes ({} samples)\n" , actual.size , (actual.size / sizeof(AudioSample)));
+    cerr << fmt::format("Internal sample buffer is {} bytes ({} samples)\n" , buffer_len , buffer_max);
 
     SDL_PauseAudioDevice(sound_device_id, 0);
 }

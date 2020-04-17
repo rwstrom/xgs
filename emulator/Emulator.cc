@@ -20,7 +20,7 @@
 #include <stdexcept>
 #include <thread>
 
-#include <boost/format.hpp>
+#include <fmt/format.h>
 #include <boost/program_options.hpp>
 
 #include <SDL.h>
@@ -57,7 +57,6 @@ namespace po = boost::program_options;
 using std::cerr;
 using std::endl;
 using std::string;
-using boost::format;
 
 static long now()
 {
@@ -188,7 +187,7 @@ void Emulator::run()
     current_frame = 0;
 
     timer_interval = 1000000000 / framerate;
-    cerr << boost::format("Timer period is %d Hz (%d ns)\n") % framerate % timer_interval;
+    cerr << fmt::format("Timer period is {} Hz ({} ns)\n" , framerate, timer_interval);
 
     using clk = std::chrono::steady_clock; 
     auto next_tick = clk::now() + std::chrono::nanoseconds(timer_interval);
@@ -352,7 +351,7 @@ unsigned int Emulator::loadFile(const std::string& filename, const unsigned int 
     auto bytes = fs::file_size(p);
     
     if (bytes != expected_size) {
-        string err = (boost::format("Error loading %s: expected %d bytes, but read %d\n") % filename % expected_size % bytes).str();
+        string err = fmt::format("Error loading {}: expected {} bytes, but read {}\n" , filename , expected_size , bytes);
 
         throw std::runtime_error(err);
         return 0;
@@ -421,8 +420,8 @@ bool Emulator::loadConfig(const int argc, const char **argv)
         ("s6d2", po::value<string>(&s6d2), "Mount disk image on S6,D2");
 
     for (unsigned int i = 1 ; i <= kSmartportUnits ; ++i) {
-        string name = (format("hd%d") % i).str();
-        string desc = (format("Set HD #%d image") % i).str();
+        string name = fmt::format("hd{}" , i);
+        string desc = fmt::format("Set HD #{} image" , i);
 
         vdisks.add_options()
             (name.c_str(), po::value(&hd[i - 1]), desc.c_str());

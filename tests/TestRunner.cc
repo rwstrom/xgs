@@ -18,7 +18,6 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <boost/format.hpp>
 
 #include <fstream>
 #include <boost/program_options.hpp>

@@ -13,7 +13,7 @@
 #include <iostream>
 #include <random>
 #include <string>
-#include <boost/format.hpp>
+#include <fmt/format.h>
 
 
 using std::uint8_t;

@@ -24,7 +24,7 @@
 #include "standard_colors.h"
 
 using std::cerr;
-using boost::format;
+
 
 void VGC::reset()
 {
@@ -250,9 +250,8 @@ void VGC::write(const unsigned int& offset, const uint8_t& val)
             sw_super  = val & 0x80;
             sw_linear = val & 0x40;
             sw_a2mono = val & 0x20;
-if(sw_a2mono) std::cout << "MONO\n";
             if (!(val & 0x01)) {
-                cerr << format("WARNING: attempt to enable the A17 bank latch in NEWVIDEO\n");
+                cerr << "WARNING: attempt to enable the A17 bank latch in NEWVIDEO\n";
             }
 
             modeChanged();

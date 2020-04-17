@@ -14,7 +14,7 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <boost/format.hpp>
+
 
 #include "emulator/common.h"
 

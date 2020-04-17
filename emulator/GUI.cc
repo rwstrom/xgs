@@ -16,7 +16,7 @@
 #include "disks/IWM.h"
 
 using std::string;
-using boost::format;
+
 namespace GUI {
 
 // Data
@@ -259,6 +259,7 @@ void newFrame(SDL_Window *window)
 
 void initialize()
 {
+    ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
 
     io.KeyMap[ImGuiKey_Tab] = SDLK_TAB;
@@ -311,7 +312,7 @@ void shutdown()
         g_FontTexture = 0;
     }
 
-    ImGui::Shutdown();
+    ImGui::DestroyContext();
 }
 
 bool processEvent(SDL_Event& event)
@@ -360,8 +361,8 @@ void drawStatusBar(Emulator& emulator)
     Video *video = emulator.getVideo();
 
     const unsigned int bar_height = 34;
-    string speed = (format("%0.1f MHz") % emulator.getSpeed()).str();
-    string version = (format("XGS v%0d.%0d") % kVersionMajor % kVersionMinor).str();
+    string speed = fmt::format("{:0.1f} MHz" , emulator.getSpeed());
+    string version = fmt::format("XGS v{}.{}", kVersionMajor , kVersionMinor);
     bool s5d1 = false;
     bool s5d2 = false;
     bool s6d1 = false;
