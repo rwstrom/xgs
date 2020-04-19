@@ -24,9 +24,8 @@
 #include <boost/program_options.hpp>
 
 #include <SDL.h>
-#include "imgui/imgui.h"
 
-#include "GUI.h"
+
 #include "System.h"
 #include "Video.h"
 
@@ -109,9 +108,7 @@ bool Emulator::setup(const int argc, const char** argv)
         throw std::runtime_error(SDL_GetError());
     }
 
-    video = new Video(VGC::kPixelsPerLine, VGC::kLinesPerFrame * 2);
-
-    GUI::initialize();
+    video = new Video(VGC::kPixelsPerLine+80, VGC::kLinesPerFrame * 2);
 
     cpu = new M65816::Processor();
     sys = new System(rom03);
@@ -240,17 +237,6 @@ void Emulator::tick()
     video->startFrame();
     video->drawFrame(vgc->frame_buffer, vgc->video_width, vgc->video_height);
 
-    GUI::newFrame(video->window);
-
-    if (show_status_bar) {
-        GUI::drawStatusBar(*this);
-    }
-
-    if (show_menu) {
-        GUI::drawMenu(*this);
-    }
-
-    ImGui::Render();
     video->endFrame();
 
     this_time = now();

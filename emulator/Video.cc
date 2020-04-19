@@ -14,8 +14,6 @@
 
 #include <SDL.h>
 
-#include <glm/gtc/type_ptr.hpp>
-
 #ifdef RPI
 #include <bcm_host.h>
 #endif
@@ -24,67 +22,20 @@
 
 #include "Emulator.h"
 #include "Video.h"
-#include "shader_utils.h"
 
-static const char vertex_shader_source[] = 
-    "#version 100\n"
-    "attribute vec2 coord;\n"
-    "attribute vec2 tex_coord;\n"
-    "uniform mat4 transform;\n"
-    "varying vec2 v_tex_coord;\n"
-    "void main()\n"
-    "{\n"
-    "    v_tex_coord = tex_coord;\n"
-    "    gl_Position = transform * vec4(coord.x, coord.y, 0, 1.0);\n"
-    "}\n";
 
-static const char fragment_shader_source[] =
-    "#version 100\n"
-    "precision mediump float;\n"
-    "uniform sampler2D sampler;\n"
-    "varying vec2 v_tex_coord;\n"
-    "void main()\n"
-    "{\n"
-    "   vec4 tex = texture2D(sampler, v_tex_coord);\n"
-    "   gl_FragColor = vec4(tex.r, tex.g, tex.b, 1.0);\n"
-    "}\n";
 
 Video::Video(const unsigned int width, const unsigned int height)
 {
     video_width  = width;
     video_height = height;
 
-    
-    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 1);
-
-#ifdef RPI
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-    uint32_t disp_width, disp_height;
-
-    if (graphics_get_display_size(0 /* LCD */, &disp_width, &disp_height) < 0) {
-        throw std::runtime_error("Unable to get display size");
-    }
-
-    window = SDL_CreateWindow("XGS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, disp_width, disp_height, SDL_WINDOW_OPENGL|SDL_WINDOW_FULLSCREEN_DESKTOP);
-#else
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    window = SDL_CreateWindow("XGS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
-#endif
+    window = SDL_CreateWindow("XGS-rws",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,0 );
     if (window == nullptr) {
         throw std::runtime_error(SDL_GetError());
     }
 
-    context = SDL_GL_CreateContext(window);
-    if (context == nullptr) {
-        throw std::runtime_error(SDL_GetError());
-    }
+    _renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
 
     initResources();
 #ifdef RPI
@@ -96,6 +47,9 @@ Video::Video(const unsigned int width, const unsigned int height)
 
 Video::~Video()
 {
+    SDL_DestroyTexture(_gs_screen);
+    SDL_DestroyRenderer(_renderer);
+    SDL_DestroyWindow(window);
 }
 
 /**
@@ -103,69 +57,36 @@ Video::~Video()
  */
 void Video::startFrame()
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    SDL_RenderClear(_renderer);
+  
 }
 
 /**
  * This method actually draws the current frame from the VGC on the screen.
- * It just converts the frame buffer into a texture, and uses the texture to
- * draw a pair of triangles that fills the entire window.
+ * It just converts the frame buffer into a texture.
  */
 void Video::drawFrame(const pixel_t *frame, const unsigned int width, const unsigned int height)
 {
-    projection = glm::ortho(0.0f, (float) width, (float) height, 0.0f);
+    uint8_t* pixels;
+    int pitch;
+    _gs_screen_size.w = width;
+    _gs_screen_size.h = height;
+    SDL_LockTexture(_gs_screen, nullptr, (void **)&pixels, &pitch);
 
-    TriangleVertex triangles[4] = {
-        { { 0, 0}, { 0.0f, 0.0f } },
-        { { 0, (float) height }, { 0.0f, 1.0f } },
-        { { (float) width, 0 },  { 1.0f, 0.0f } },
-        { { (float) width, (float) height }, { 1.0f, 1.0f } }
-    };
+    for(unsigned int h = 0; h < height; ++h)
+    {
+        memmove(pixels+(pitch*h), frame+(h*width), width*sizeof(uint32_t));
+    }
+    SDL_UnlockTexture(_gs_screen);
+    
+    
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(triangles), triangles, GL_DYNAMIC_DRAW);
-
-    glUseProgram(program);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, frame);
-
-    glUniform1i(uniform_sampler, 0 /* GL_TEXTURE0 */);
-    glUniformMatrix4fv(uniform_transform, 1, GL_FALSE, glm::value_ptr(projection));
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glVertexAttribPointer(
-        attribute_coord,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(TriangleVertex),
-        0
-    );
-    glVertexAttribPointer(
-        attribute_tex_coord,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(TriangleVertex),
-        (GLvoid *) offsetof(struct TriangleVertex, tex)
-    );
-
-    glEnableVertexAttribArray(attribute_coord);
-    glEnableVertexAttribArray(attribute_tex_coord);
-
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glDisableVertexAttribArray(attribute_coord);
-    glDisableVertexAttribArray(attribute_tex_coord);
 }
 
 void Video::endFrame()
 {
-    SDL_GL_SwapWindow(window);
+    SDL_RenderCopy(_renderer, _gs_screen, &_gs_screen_size, &_viewport);
+    SDL_RenderPresent(_renderer);
 }
 
 void Video::setFullscreen(bool enabled)
@@ -197,31 +118,10 @@ void Video::onResize(const unsigned int width, const unsigned int height)
     frame_top    = (win_height - frame_height) / 2;
     frame_bottom = frame_top + frame_height - 1;
 
-    glViewport(frame_left, frame_top, frame_width, frame_height);
-    assert(glGetError() == GL_NO_ERROR);
 }
 
 void Video::initResources()
 {
-    // Set up the VBO for our triangle strip
-    glGenBuffers(1, &vbo);
+    _gs_screen = SDL_CreateTexture(_renderer,SDL_PIXELFORMAT_BGR888,SDL_TEXTUREACCESS_STREAMING,720,262);
 
-    // Set up our texture.
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    // Compile and link the shaders
-    vertex_shader   = create_shader(GL_VERTEX_SHADER, vertex_shader_source, sizeof(vertex_shader_source));
-    fragment_shader = create_shader(GL_FRAGMENT_SHADER, fragment_shader_source, sizeof(fragment_shader_source));
-    program         = link_program(vertex_shader, fragment_shader);
-
-    attribute_coord     = glGetAttribLocation(program, "coord");
-    attribute_tex_coord = glGetAttribLocation(program, "tex_coord");
-    uniform_transform   = glGetUniformLocation(program, "transform");
-    uniform_sampler     = glGetUniformLocation(program, "sampler");
 }

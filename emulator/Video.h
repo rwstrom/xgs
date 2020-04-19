@@ -1,28 +1,14 @@
 #ifndef VIDEO_H_
 #define VIDEO_H_
 
-#ifdef RPI
-    #include "GLES2/gl2.h"
-    #include "EGL/egl.h"
-    #include "EGL/eglext.h"
-#else
-    #include "gl_33.h"
-#endif
+
 
 #include <SDL.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
-struct TriangleVertex {
-    GLfloat coord[2] = {0.0f};
-    GLfloat tex[2] = {0.0f};
-};
 
 class Video {
     public:
-        SDL_Window    *window = nullptr;
-        SDL_GLContext context = nullptr;
-
+        
         float frame_width, frame_height;
         float frame_left, frame_right, frame_top, frame_bottom;
 
@@ -39,20 +25,18 @@ class Video {
     private:
         unsigned int video_width, video_height;
         unsigned int win_width, win_height;
-
-        GLuint vertex_shader;
-        GLuint fragment_shader;
-        GLuint program;
-        GLuint texture;
-        GLuint vbo;
-
-        GLint attribute_coord;
-        GLint attribute_tex_coord;
-        GLint uniform_transform;
-        GLint uniform_sampler;
-
-        glm::mat4 projection;
-
+        
+        SDL_Window    *window = nullptr;
+        SDL_Renderer* _renderer = nullptr;
+        SDL_Texture* _gs_screen = nullptr;
+        
+        //current resolution; hires, super-hires, etc.
+        SDL_Rect _gs_screen_size = {0,0,0,0}; 
+        
+        //area that we will draw the finished screen. ie., window size - space for gui elements
+        //the screen texture will be stretched/shrunk as needed.
+        const SDL_Rect _viewport = {0,0,720,262*2}; 
+        
         void initResources();
 };
 
