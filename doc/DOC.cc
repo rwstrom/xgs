@@ -358,6 +358,7 @@ void DOC::scanOscillators(AudioSample *samples_out)
             if (!osc_mode[osc_num]) {
                 last_addr[osc_num] = addr;
                 sample = (float) osc_addrbase[osc_num][addr];
+                doc_registers[0x60 + osc_num] = osc_addrbase[osc_num][addr];
                 if (osc_int[osc_num]) pushIRQ(osc_num);
                 osc_acc[osc_num] += osc_freq[osc_num];
             } else {
@@ -366,6 +367,7 @@ void DOC::scanOscillators(AudioSample *samples_out)
         } else {
             last_addr[osc_num] = addr;
             sample = (float) osc_addrbase[osc_num][addr];
+            doc_registers[0x60 + osc_num] = osc_addrbase[osc_num][addr];
             osc_acc[osc_num] += osc_freq[osc_num];
         }
 
