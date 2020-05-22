@@ -77,7 +77,10 @@ jobs:
       run: |
           vcpkg install sdl2:x64-windows sdl2-ttf:x64-windows
           vcpkg integrate install
-    
+    - name: env
+      run: echo "::set-env name=BOOST_ROOT_LATEST::$env:BOOST_ROOT_1_72_0"
+    - name: echo
+      run: $env:BOOST_ROOT_LATEST
     - name: build
       run: |
           mkdir build
