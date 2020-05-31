@@ -389,6 +389,7 @@ bool Emulator::loadConfig(const int argc, const char **argv)
     }
 #else //windows
     //windows is a mess when it comes to finding file locations.
+    //just use executable path for now.
     //
     data_dir = fs::current_path();
 #endif

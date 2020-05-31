@@ -167,7 +167,6 @@ class VGC : public Device {
 
         inline void drawBorder(pixel_t *line, const unsigned int len)
         {
-            unsigned int i = 0;
 
             for (unsigned int i = 0 ; i < len ; ++i) {
                 line[i] = border;

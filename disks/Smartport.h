@@ -61,8 +61,8 @@ class Smartport : public Device {
         ~Smartport();
 
         void reset();
-        uint8_t read(const unsigned int& offset) { return 0; }
-        void write(const unsigned int& offset, const uint8_t& value) {}
+        uint8_t read(const unsigned int& /*offset*/) { return 0; }
+        void write(const unsigned int& /*offset*/, const uint8_t& /*value*/) {}
 
         void wdm(const uint8_t);
 
