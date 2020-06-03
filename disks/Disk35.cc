@@ -83,8 +83,8 @@ uint8_t Disk35::status(const unsigned int state)
                 result = vdisk? vdisk->locked : 0;
 
                 break;
-        case 0x04:  // motor on
-                result = motor_on;
+        case 0x04:  // motor on  0 = yes, 1 = no
+                result = !motor_on;
 
                 break;
         case 0x05:  // at track 0: 0 = yes, 1 = no
@@ -147,7 +147,7 @@ uint8_t Disk35::read(const cycles_t cycle_count)
     return ret;
 }
 
-void Disk35::write(const cycles_t cycle_count, const uint8_t val)
+void Disk35::write(const cycles_t /*cycle_count*/, const uint8_t /*val*/)
 {
 }
 

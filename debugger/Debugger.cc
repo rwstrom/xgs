@@ -45,7 +45,7 @@ uint8_t Debugger::memoryRead(const uint8_t bank, const uint16_t address, const u
     return val;
 }
 
-uint8_t Debugger::memoryWrite(const uint8_t bank, const uint16_t address, const uint8_t val, const mem_access_t type)
+uint8_t Debugger::memoryWrite([[maybe_unused]]const uint8_t bank, [[maybe_unused]]const uint16_t address, const uint8_t val, const mem_access_t type)
 {
     switch (type) {
         case M65816::STACK:
@@ -139,7 +139,7 @@ void Debugger::handleInstructionRead(const uint8_t bank, const uint16_t address,
     }
 }
 
-void Debugger::handleVectorRead(const uint8_t bank, const uint16_t address, const uint8_t val)
+void Debugger::handleVectorRead(const uint8_t /*bank*/, const uint16_t address, const uint8_t val)
 {
     if (vector_fetch) {
         vector_fetch = false;

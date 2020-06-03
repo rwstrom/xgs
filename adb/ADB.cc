@@ -403,9 +403,7 @@ uint8_t ADB::readPaddle1()
     if (system->cpu->total_cycles < paddle1_time) {
         return 0x80;
     }
-    else {
-        return 0x00;
-    }
+
     return 0x80;
 }
 

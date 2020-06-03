@@ -21,7 +21,7 @@ class Disk35 {
 
         int current_track = 0;
 
-        unsigned int step = 0;
+        uint8_t step = 0;
         unsigned int head = 0;
         unsigned int nib_pos = 0;
 

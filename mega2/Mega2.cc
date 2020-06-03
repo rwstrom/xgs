@@ -343,6 +343,13 @@ uint8_t Mega2::read(const unsigned int& offset)
             if(adb->sw_m2mousemvirq) val |= 0x01;
 
             break;
+        case 0x47:
+            if (sw_diagtype & 0x10) system->lowerInterrupt(MEGA2_IRQ);
+            if (sw_diagtype & 0x08) system->lowerInterrupt(MEGA2_IRQ);
+
+            sw_diagtype &= ~0x18;
+
+            break;
         case 0x58: 
             sw_annunciator[0] = false;
             break;

@@ -183,7 +183,7 @@ void IWM::write(const unsigned int& offset, const uint8_t& val)
     }
 }
 
-void IWM::tick(const unsigned int frame_number)
+void IWM::tick(const unsigned int /*frame_number*/)
 {
     if (iwm_motor_on && iwm_motor_spindown) {
         if (motor_off_frame <= system->vbl_count) {
